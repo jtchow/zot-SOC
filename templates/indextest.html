@@ -1,0 +1,37 @@
+<body>
+    <table border='1' class="table table-hover" data-toggle="table">
+    {% for seg in courses %}
+        <tr data-toggle="collapse" data-target="{{seg}}" class="clickable">
+            <th>{{seg}}</th>
+        </tr>
+        <tr>
+        {% for course in courses[seg] %}
+            <td>{{course[0]}} {{course[1]['num']}} : {{course[1]['title']}}</td>
+        </tr>    	        
+        <tr>
+            <th>Code</th>
+            <th>Type</th>
+            <th>Professor</th>
+            <th>Time</th>
+            <th>Place</th>
+            <th>Max</th>
+            <th>Enrolled</th>
+            <th>Waitlist</th>
+            <th>Restrictions</th>
+            <th>Status</th>
+            <th>Prerequisites</th>
+        </tr> 
+            {% for offering in course[1]['offerings'] %}                       
+            <tr>
+                {% for value in offering.values() %}
+                    <td>{{value}}</td>	
+                {% endfor %}
+            	<td>{{course[1]['prereqs']}}</td>	
+            </tr>
+            {% endfor %}    
+        {% endfor %}
+    {% endfor %}
+</body>
+
+ 
+ 

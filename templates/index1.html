@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<style>
+    h1 {
+        font-size: 40px;
+        font-family: 'Lato Hairline', sans-serif;
+        color: #FFFFFF;
+        background-color: #0064a4;
+        padding: 10px;
+        margin: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+
+    head {
+        margin: 0 !important;
+    }
+
+    body {
+        margin: 60px 0 0 0;
+    }
+
+    .collapsible {
+        background-color: #eee;
+        color: #444;
+        padding: 12px;
+        font-size: 15px;
+        border: thin;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+        outline: none;
+    }
+
+    .collapsible-empty{
+        background-color:#eee;
+        color:rgb(230, 66, 66);
+        padding: 12px;
+        font-size: 15px;
+        border: thin;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+        outline: none;
+    }
+
+    .active, .collapsible:hover, .subreq:hover {
+        background-color: #ccc;
+    }
+
+    .content {
+        padding-left: 12px;
+        overflow: hidden;
+        background-color: #f1f1f1;
+        display: none;
+        border-left: solid;
+        border-color: #24ACFF;
+    }
+
+    .collapsible:after {
+        content: "\02795";
+        font-size: 10px;
+        color: black;
+        float: right;
+        margin-left: 5px;
+    }
+
+    .active:after {
+        content: "\2796";
+    }
+
+    .column {
+        float: left;
+        width: 25%;
+    }
+
+    .left, .middle {
+        width: 25%;
+    }
+
+    .right {
+        width: 50%;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        display: none;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+    
+</style>
+<html>
+    <head>
+        <h1>ZotSoc: DegreeWorks Course Planner</h1>
+    </head>
+<body>
+    {% for big_req in courses %}
+        <button class="collapsible">BIG REQUIREMENT: {{big_req[0]}}</button>
+            {% if big_req[1]|length>1 %}
+            <div class="content">
+                {% for sub in big_req[1] %}
+                    {% if sub[1]|length>0 %}
+                        {% if sub[1][-1] == 'True' %} 
+                            <button class="collapsible"> SUBREQ: {{sub[0]}} OR</button>
+                        {% else %}
+                            <button class="collapsible"> SUBREQ: {{sub[0]}} </button>
+                        {% endif %}
+                    {% else %}
+                        <button class="collapsible-empty"> SUBREQ: {{sub[0]}} No Classes Available:( </button>
+                    {%endif%}
+                    <div class="content">
+                        {% for full_class in sub[1] %}
+                            {% for class in full_class %}
+                                <button class="collapsible"> {{full_class[0]}} {{full_class[1]['num']}}:{{full_class[1]['title']}} </button>
+                                <table>
+                                    {% for offering in full_class[1]['offerings'] %}
+                                        <tr>
+                                            {% for attr in offering.values() %}
+                                                <td> {{attr}} </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            {% else %}
+                <div class="content">
+                    {% for class in big_req[1] %}
+                        {% for class in class %}
+                            <button class="collapsible"> {{class[0]}} {{class[1]['num']}}:{{class[1]['title']}} </button>
+                            <table>
+                                {% for offering in class[1]['offerings'] %}
+                                    <tr>
+                                        {% for attr in offering.values() %}
+                                            <td> {{attr}} </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endfor %}
+                    {% endfor %}   
+                </div>
+            {% endif %}
+    {% endfor %}
+</body>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var sub = document.getElementsByClassName("subreq");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+ 
+ 
