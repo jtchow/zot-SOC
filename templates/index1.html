@@ -127,11 +127,11 @@
                         <button class="collapsible-empty"> SUBREQ: {{sub[0]}} No Classes Available :( </button>
                     {%endif%}
                     <div class="content">
-                        {% for full_class in sub[1] %}
-                            {% for class in full_class %}
-                                <button class="collapsible"> {{full_class[0]}} {{full_class[1]['num']}}: {{full_class[1]['title']}} </button>
+                        {% for class in sub[1] %}
+                            {% if class != 'True' %}
+                                <button class="collapsible"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
                                 <table>
-                                    {% for offering in full_class[1]['offerings'] %}
+                                    {% for offering in class[1]['offerings'] %}
                                         <tr>
                                             {% for attr in offering.values() %}
                                                 <td> {{attr}} </td>
@@ -139,7 +139,7 @@
                                         </tr>
                                     {% endfor %}
                                 </table>
-                            {% endfor %}
+                            {% endif %}
                         {% endfor %}
                     </div>
                 {% endfor %}
