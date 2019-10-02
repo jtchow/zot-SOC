@@ -147,18 +147,38 @@
             {% else %}
                 <div class="content">
                     {% for subreq in big_req[1] %}
-                        {% for class in subreq %}
-                            <button class="collapsible"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
-                            <table>
-                                {% for offering in class[1]['offerings'] %}
-                                    <tr>
-                                        {% for attr in offering.values() %}
-                                            <td> {{attr}} </td>
-                                        {% endfor %}
-                                    </tr>
+                        {% if subreq|length>1 %}
+                            <button class="collapsible">{{subreq[0]}}</button>
+                            <div class='content'>
+                                {% for class in subreq[1] %}
+                                <button class="collapsible"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
+                                <table>
+                                    {% for offering in class[1]['offerings'] %}
+                                        <tr>
+                                            {% for attr in offering.values() %}
+                                                <td> {{attr}} </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
                                 {% endfor %}
-                            </table>
-                        {% endfor %}
+                            </div>
+                        {% else %}
+                            {% if subreq|length == 1 %}
+                                <button class="collapsible"> {{subreq[0][0]}} {{subreq[0][1]['num']}}: {{subreq[0][1]['title']}} </button>                       
+                                    <table>
+                                        {% for offering in subreq[0][1]['offerings'] %}
+                                            <tr>
+                                                {% for attr in offering.values() %}
+                                                    <td> {{attr}} </td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </table>                                  
+                            {% endif %}                            
+                        </div>
+
+                        {% endif %}
                     {% endfor %}   
                 </div>
             {% endif %}
