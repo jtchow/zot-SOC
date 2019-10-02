@@ -66,8 +66,13 @@ def add_single_class(line):
     requirement = line.split()                             
     for dept in departments:       
         if dept in requirement:
-            course_num = requirement[-1]
-            offered_courses[dept] = [course_num]
+            if requirement[-1] == 'and' or requirement[-1] == 'or':
+                offered_courses['option'] = True
+                course_num = requirement[-2]
+                offered_courses[dept] = [course_num]
+            else:
+                course_num = requirement[-1]
+                offered_courses[dept] = [course_num]
 
     offered_courses = expand_courses(offered_courses)
     offered_courses = schedule_checker(offered_courses)    
@@ -104,25 +109,23 @@ def read_input(degreeworks_data):
     with the associated courses that are offered for current quarter.'''                                
     all_courses = []
     lines = degreeworks_data.splitlines()
-    try:
-        for i,line in enumerate(lines):
-            line = clean_line(line)                                                  
-            if 'Still' in line and 'Class' in line:                                 
-                add_standalone_requirement(all_courses, line, i, lines)
+    for i,line in enumerate(lines):
+        line = clean_line(line)                                                  
+        if 'Still' in line and 'Class' in line:                                 
+            add_standalone_requirement(all_courses, line, i, lines)
 
-            elif 'Still' in line:
-                create_master_requirement(all_courses, lines, i)
+        elif 'Still' in line:
+            create_master_requirement(all_courses, lines, i)
 
-            elif 'Class' in line:                              
-                if ',' in line:                                 
-                    offered_courses = add_multiple_classes(line)        
-                    add_to_master_requirement(all_courses, i, lines, offered_courses)  
+        elif 'Class' in line:                              
+            if ',' in line:                                 
+                offered_courses = add_multiple_classes(line)        
 
-                else:
-                    offered_courses = add_single_class(line)
-                add_to_master_requirement(all_courses, i, lines, offered_courses)    
-    except: 
-        print(line)
+            else:
+                offered_courses = add_single_class(line)
+            add_to_master_requirement(all_courses, i, lines, offered_courses)    
+        
+    #print(all_courses)
     return all_courses
     
 
@@ -160,15 +163,16 @@ def add_unknowns(course, course_list):
 
 def expand_courses(courses):
     '''reads requirements dict and if theres 111:121 or 12@ then it updates dict to include additional course numbers.'''
-    for department in courses.values():             
-        for course in department:            
-            if ':' in course:
-                add_ranges(course, department)
-                department.remove(course) 
-
-            elif '@' in course: 
-                add_unknowns(course, department)
-                department.remove(course)
+    for department in courses.values():  
+        if type(department) is not bool:           
+            for course in department:            
+                if ':' in course:
+                    add_ranges(course, department)
+                    department.remove(course) 
+    
+                elif '@' in course: 
+                    add_unknowns(course, department)
+                    department.remove(course)
             
     return courses
 
@@ -180,10 +184,11 @@ def schedule_checker(courses):
     with open('soc.json','r') as f:
         soc = json.load(f)
         for dept in courses:
-            for course in soc[dept]:
-                if course['num'] in courses[dept]:
-                    offered.append((dept,course)) 
-    if 'option' in courses and length(offered) > 0:
+            if dept != "option":
+                for course in soc[dept]:
+                    if course['num'] in courses[dept]:
+                        offered.append((dept,course)) 
+    if 'option' in courses and len(offered) > 0:
         offered.append('True')
     return offered
 
