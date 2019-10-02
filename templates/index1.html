@@ -146,9 +146,9 @@
             </div>
             {% else %}
                 <div class="content">
-                    {% for class in big_req[1] %}
-                        {% for class in class %}
-                            <button class="collapsible"> {{class[0]}} {{class[1]['num']}}:{{class[1]['title']}} </button>
+                    {% for subreq in big_req[1] %}
+                        {% for class in subreq %}
+                            <button class="collapsible"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
                             <table>
                                 {% for offering in class[1]['offerings'] %}
                                     <tr>
