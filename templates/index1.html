@@ -131,6 +131,18 @@
                             {% if class != 'True' %}
                                 <button class="collapsible"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
                                 <table>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Type</th>
+                                        <th>Professor</th>
+                                        <th>Time</th>
+                                        <th>Location</th>
+                                        <th>Max</th>
+                                        <th>Enrolled</th>
+                                        <th>Waitlist</th>
+                                        <th>Restrictions</th>
+                                        <th>Status</th>
+                                    </tr>
                                     {% for offering in class[1]['offerings'] %}
                                         <tr>
                                             {% for attr in offering.values() %}
@@ -153,6 +165,18 @@
                                 {% for class in subreq[1] %}
                                 <button class="collapsible"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
                                 <table>
+                                    <tr>
+                                        <th>Code</th>
+                                            <th>Type</th>
+                                            <th>Professor</th>
+                                            <th>Time</th>
+                                            <th>Location</th>
+                                            <th>Max</th>
+                                            <th>Enrolled</th>
+                                            <th>Waitlist</th>
+                                            <th>Restrictions</th>
+                                        <th>Status</th>
+                                    </tr>
                                     {% for offering in class[1]['offerings'] %}
                                         <tr>
                                             {% for attr in offering.values() %}
@@ -167,6 +191,18 @@
                             {% if subreq|length == 1 %}
                                 <button class="collapsible"> {{subreq[0][0]}} {{subreq[0][1]['num']}}: {{subreq[0][1]['title']}} </button>                       
                                     <table>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Type</th>
+                                            <th>Professor</th>
+                                            <th>Time</th>
+                                            <th>Location</th>
+                                            <th>Max</th>
+                                            <th>Enrolled</th>
+                                            <th>Waitlist</th>
+                                            <th>Restrictions</th>
+                                        <th>Status</th>
+                                    </tr>
                                         {% for offering in subreq[0][1]['offerings'] %}
                                             <tr>
                                                 {% for attr in offering.values() %}
