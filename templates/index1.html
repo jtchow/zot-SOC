@@ -46,8 +46,38 @@
         border: 1px solid #838383;
     }
 
+    .subreq {
+        background-color: #eee;
+        color: #444;
+        padding: 12px;
+        font-size: 15px;
+        border: thin;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+        text-indent:2%;
+        border: 1px solid #838383;
+    }
+
+    .course {
+        background-color: #eee;
+        color: #444;
+        padding: 12px;
+        font-size: 15px;
+        border: thin;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+        text-indent:4%;
+        border: 1px solid #838383;
+    }
+
+    table {
+        margin-left:4%;
+    }
+
     .active, .collapsible:hover, .subreq:hover {
-        background-color: #ccc;
+        background-color:#DCF2FF;
     }
 
     .content {
@@ -105,6 +135,8 @@
     tr:nth-child(even) {
         background-color: #dddddd;
     }
+
+
     
 </style>
 <html>
@@ -123,18 +155,18 @@
                 {% for sub in big_req[1] %}
                     {% if sub[1]|length>0 %}
                         {% if sub[1][-1] == 'True' %} 
-                            <button class="collapsible"> SUBREQ: {{sub[0]}} OR</button>
+                            <button class="collapsible subreq"> SUBREQ: {{sub[0]}} OR</button>
                         {% else %}
-                            <button class="collapsible"> SUBREQ: {{sub[0]}} </button>
+                            <button class="collapsible subreq"> SUBREQ: {{sub[0]}} </button>
                         {% endif %}
                     {% else %}
-                        <button class="collapsible-empty"> SUBREQ: {{sub[0]}} No Classes Available :( </button>
+                        <button class="collapsible-empty subreq"> SUBREQ: {{sub[0]}} No Classes Available :( </button>
                     {% endif %}
                     <div class="content">
                         {% for class in sub[1] %}
                             {% if class != 'True' %}
-                                <button class="collapsible"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
-                                <table>
+                                <button class="collapsible course"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
+                                <table class='course'>
                                     <tr>
                                         <th>Code</th>
                                         <th>Type</th>
@@ -164,11 +196,11 @@
                 <div class="content">
                     {% for subreq in big_req[1] %}
                         {% if subreq|length>1 %}
-                            <button class="collapsible">{{subreq[0]}}</button>
+                            <button class="collapsible subreq">{{subreq[0]}}</button>
                             <div class='content'>
                                 {% for class in subreq[1] %}
-                                <button class="collapsible"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
-                                <table>
+                                <button class="collapsible course"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
+                                <table class='course'>
                                     <tr>
                                         <th>Code</th>
                                             <th>Type</th>
@@ -193,8 +225,8 @@
                             </div>
                         {% else %}
                             {% if subreq|length == 1 %}
-                                <button class="collapsible"> {{subreq[0][0]}} {{subreq[0][1]['num']}}: {{subreq[0][1]['title']}} </button>                       
-                                    <table>
+                                <button class="collapsible course"> {{subreq[0][0]}} {{subreq[0][1]['num']}}: {{subreq[0][1]['title']}} </button>                       
+                                    <table class='course'>
                                         <tr>
                                             <th>Code</th>
                                             <th>Type</th>
