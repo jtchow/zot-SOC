@@ -25,8 +25,7 @@ def clean_line(line):
 
 
 def add_multiple_classes(line): 
-    '''Deals with lines that are like ECON20, 21, 22.''' 
-    last_dept_seen = ''                                  
+    '''Deals with lines that are like ECON20, 21, 22.'''                                
     offered_courses = {}
 
     courses = line.split(',')
@@ -34,14 +33,13 @@ def add_multiple_classes(line):
         if any(dept in course for dept in departments):    
             course_info = course.split()
             if course_info[-1] == 'or':            
-                department = course_info[-3]
-                course_num = course_info[-2]    
+                department = course_info[0]
+                course_num = course_info[1]    
                 offered_courses[department] = [course_num]   
                 offered_courses['option'] = True
                 offered_courses = expand_courses(offered_courses)                      
                 offered_courses = schedule_checker(offered_courses)
                 return offered_courses
-
 
             else: 
                 department = course_info[-2]
@@ -101,7 +99,7 @@ def add_standalone_requirement(all_courses, line, i, lines):
 
     else:
         offered = add_single_class(line)    
-    all_courses.append((master_req,[offered]))
+    all_courses.append([master_req,[offered]])
 
 
 def read_input(degreeworks_data):
@@ -123,9 +121,8 @@ def read_input(degreeworks_data):
 
             else:
                 offered_courses = add_single_class(line)
-            add_to_master_requirement(all_courses, i, lines, offered_courses)    
-        
-    #print(all_courses)
+            if offered_courses is not None:
+                add_to_master_requirement(all_courses, i, lines, offered_courses)    
     return all_courses
     
 

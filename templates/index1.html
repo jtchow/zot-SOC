@@ -113,7 +113,11 @@
     </head>
 <body>
     {% for big_req in courses %}
-        <button class="collapsible">BIG REQUIREMENT: {{big_req[0]}}</button>
+        {% if (big_req[1]|length > 0) and (big_req[1][0]|length > 0) %}
+            <button class="collapsible">BIG REQUIREMENT: {{big_req[0]}}</button>
+        {% else %}
+            <button class="collapsible-empty">BIG REQUIREMENT: {{big_req[0]}} >>>>>>>>>>>>>>>>>>>>>>>>> No Classes Available</button>
+        {% endif %}
             {% if big_req[1]|length>1 %}
             <div class="content">
                 {% for sub in big_req[1] %}
@@ -125,7 +129,7 @@
                         {% endif %}
                     {% else %}
                         <button class="collapsible-empty"> SUBREQ: {{sub[0]}} No Classes Available :( </button>
-                    {%endif%}
+                    {% endif %}
                     <div class="content">
                         {% for class in sub[1] %}
                             {% if class != 'True' %}
