@@ -32,7 +32,7 @@ def add_multiple_classes(line):
     for course in courses:          
         if any(dept in course for dept in departments):    
             course_info = course.split()
-            if course_info[-1] == 'or':            
+            if course_info[-1] == 'or' or course_info[-1] == 'and':            
                 department = course_info[0]
                 course_num = course_info[1]    
                 offered_courses[department] = [course_num]   
@@ -84,11 +84,19 @@ def create_master_requirement(all_courses, lines, i):
 
 def add_to_master_requirement(all_courses, i, lines, offered):
     '''Add sub requirement to its respective overall requirement.'''
-    for x in range(15):                                       
-        if 'yet' in lines[i-x]:
-            not_complete = clean_line(lines[i-x])                        
-            all_courses[-1][1].append((not_complete,offered))                           
-            break
+    if 'Lower-Division Writing' in all_courses[-1][0]:                                    
+        if 'Choose' in lines[i-2]:
+            not_complete = clean_line(lines[i-3])                        
+            all_courses[-1][1].append([not_complete,offered])                           
+            
+        # else:
+        #     all_courses[-1][1][1].update(offered)
+    else:
+        for x in range(15):                                       
+            if 'yet' in lines[i-x]:
+                not_complete = clean_line(lines[i-x])                        
+                all_courses[-1][1].append((not_complete,offered))                           
+                break
 
 
 def add_standalone_requirement(all_courses, line, i, lines):
@@ -121,6 +129,7 @@ def read_input(degreeworks_data):
 
             else:
                 offered_courses = add_single_class(line)
+
             if offered_courses is not None:
                 add_to_master_requirement(all_courses, i, lines, offered_courses)    
     return all_courses

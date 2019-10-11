@@ -140,92 +140,33 @@
     
 </style>
 <html>
-    <head>
+    <header>
         <h1>ZotSoc: DegreeWorks Course Planner</h1>
-    </head>
-<body>
-    {% for big_req in courses %}
-        {% if (big_req[1]|length > 0) and (big_req[1][0]|length > 0) %}
-            <button class="collapsible">BIG REQUIREMENT: {{big_req[0]}}</button>
-        {% else %}
-            <button class="collapsible-empty">BIG REQUIREMENT: {{big_req[0]}} >>>>>>>>>>>>>>>>>>>>>>>>> No Classes Available</button>
-        {% endif %}
-            {% if big_req[1]|length>1 %}
-            <div class="content">
-                {% for sub in big_req[1] %}
-                    {% if sub[1]|length>0 %}
-                        {% if sub[1][-1] == 'True' %} 
-                            <button class="collapsible subreq"> SUBREQ: {{sub[0]}} OR</button>
-                        {% else %}
-                            <button class="collapsible subreq"> SUBREQ: {{sub[0]}} </button>
-                        {% endif %}
-                    {% else %}
-                        <button class="collapsible-empty subreq"> SUBREQ: {{sub[0]}} No Classes Available :( </button>
-                    {% endif %}
-                    <div class="content">
-                        {% for class in sub[1] %}
-                            {% if class != 'True' %}
-                                <button class="collapsible course"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
-                                <table class='course'>
-                                    <tr>
-                                        <th>Code</th>
-                                        <th>Type</th>
-                                        <th>Professor</th>
-                                        <th>Time</th>
-                                        <th>Location</th>
-                                        <th>Max</th>
-                                        <th>Enrolled</th>
-                                        <th>Waitlist</th>
-                                        <th>Restrictions</th>
-                                        <th>Status</th>
-                                    </tr>
-                                    {% for offering in class[1]['offerings'] %}
-                                        <tr>
-                                            {% for attr in offering.values() %}
-                                                <td> {{attr}} </td>
-                                            {% endfor %}
-                                        </tr>
-                                    {% endfor %}
-                                </table>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endfor %}
-            </div>
+    </header>
+
+    <body>
+        {% for big_req in courses %}
+            {% if (big_req[1]|length > 0) and (big_req[1][0]|length > 0) %}
+                <button class="collapsible">BIG REQUIREMENT: {{big_req[0]}}</button>
             {% else %}
+                <button class="collapsible-empty">BIG REQUIREMENT: {{big_req[0]}} >>>>>>>>>>>>>>>>>>>>>>>>> No Classes Available</button>
+            {% endif %}
+                {% if big_req[1]|length>1 %}
                 <div class="content">
-                    {% for subreq in big_req[1] %}
-                        {% if subreq|length>1 %}
-                            <button class="collapsible subreq">{{subreq[0]}}</button>
-                            <div class='content'>
-                                {% for class in subreq[1] %}
-                                <button class="collapsible course"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
-                                <table class='course'>
-                                    <tr>
-                                        <th>Code</th>
-                                            <th>Type</th>
-                                            <th>Professor</th>
-                                            <th>Time</th>
-                                            <th>Location</th>
-                                            <th>Max</th>
-                                            <th>Enrolled</th>
-                                            <th>Waitlist</th>
-                                            <th>Restrictions</th>
-                                        <th>Status</th>
-                                    </tr>
-                                    {% for offering in class[1]['offerings'] %}
-                                        <tr>
-                                            {% for attr in offering.values() %}
-                                                <td> {{attr}} </td>
-                                            {% endfor %}
-                                        </tr>
-                                    {% endfor %}
-                                </table>
-                                {% endfor %}
-                            </div>
+                    {% for sub in big_req[1] %}
+                        {% if sub[1]|length>0 %}
+                            {% if sub[1][-1] == 'True' %} 
+                                <button class="collapsible subreq"> SUBREQ: {{sub[0]}} OR</button>
+                            {% else %}
+                                <button class="collapsible subreq"> SUBREQ: {{sub[0]}} </button>
+                            {% endif %}
                         {% else %}
-                            {% if subreq|length == 1 %}
-                                <button class="collapsible course"> {{subreq[0][0]}} {{subreq[0][1]['num']}}: {{subreq[0][1]['title']}} </button>                       
+                            <button class="collapsible-empty subreq"> SUBREQ: {{sub[0]}} No Classes Available :( </button>
+                        {% endif %}
+                        <div class="content">
+                            {% for class in sub[1] %}
+                                {% if class != 'True' %}
+                                    <button class="collapsible course"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
                                     <table class='course'>
                                         <tr>
                                             <th>Code</th>
@@ -237,42 +178,103 @@
                                             <th>Enrolled</th>
                                             <th>Waitlist</th>
                                             <th>Restrictions</th>
-                                        <th>Status</th>
-                                    </tr>
-                                        {% for offering in subreq[0][1]['offerings'] %}
+                                            <th>Status</th>
+                                        </tr>
+                                        {% for offering in class[1]['offerings'] %}
                                             <tr>
                                                 {% for attr in offering.values() %}
                                                     <td> {{attr}} </td>
                                                 {% endfor %}
                                             </tr>
                                         {% endfor %}
-                                    </table>                                  
-                            {% endif %}                            
+                                    </table>
+                                {% endif %}
+                            {% endfor %}
                         </div>
-
-                        {% endif %}
-                    {% endfor %}   
+                    {% endfor %}
                 </div>
-            {% endif %}
-    {% endfor %}
-</body>
+                {% else %}
+                    <div class="content">
+                        {% for subreq in big_req[1] %}
+                            {% if subreq|length>1 %}
+                                <button class="collapsible subreq">{{subreq[0]}}</button>
+                                <div class='content'>
+                                    {% for class in subreq[1] %}
+                                    <button class="collapsible course"> {{class[0]}} {{class[1]['num']}}: {{class[1]['title']}} </button>
+                                    <table class='course'>
+                                        <tr>
+                                            <th>Code</th>
+                                                <th>Type</th>
+                                                <th>Professor</th>
+                                                <th>Time</th>
+                                                <th>Location</th>
+                                                <th>Max</th>
+                                                <th>Enrolled</th>
+                                                <th>Waitlist</th>
+                                                <th>Restrictions</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        {% for offering in class[1]['offerings'] %}
+                                            <tr>
+                                                {% for attr in offering.values() %}
+                                                    <td> {{attr}} </td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {% if subreq|length == 1 %}
+                                    <button class="collapsible course"> {{subreq[0][0]}} {{subreq[0][1]['num']}}: {{subreq[0][1]['title']}} </button>                       
+                                        <table class='course'>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Type</th>
+                                                <th>Professor</th>
+                                                <th>Time</th>
+                                                <th>Location</th>
+                                                <th>Max</th>
+                                                <th>Enrolled</th>
+                                                <th>Waitlist</th>
+                                                <th>Restrictions</th>
+                                            <th>Status</th>
+                                        </tr>
+                                            {% for offering in subreq[0][1]['offerings'] %}
+                                                <tr>
+                                                    {% for attr in offering.values() %}
+                                                        <td> {{attr}} </td>
+                                                    {% endfor %}
+                                                </tr>
+                                            {% endfor %}
+                                        </table>                                  
+                                {% endif %}                            
+                            </div>
 
-<script>
-var coll = document.getElementsByClassName("collapsible");
-var sub = document.getElementsByClassName("subreq");
-var i;
+                            {% endif %}
+                        {% endfor %}   
+                    </div>
+                {% endif %}
+        {% endfor %}
+    </body>
 
-for (i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.display === "block") {
-      content.style.display = "none";
-    } else {
-      content.style.display = "block";
+    <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var sub = document.getElementsByClassName("subreq");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+        content.style.display = "none";
+        } else {
+        content.style.display = "block";
+        } 
+    });
     }
-  });
-}
-</script>
+    </script>
+</html>
  
  
