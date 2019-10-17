@@ -5,7 +5,7 @@ Created on Sat Jul  6 17:59:30 2019
 @author: Jason
 """
 import json
-from classes import Course,Offering
+from classes import *
 
 departments = ['ACENG','AFAM','ANATOMY','ANESTH','ANTHRO','ARABIC','ARMN','ART HIS','ARTS','ARTSHUM','ASIANAM','BANA','BATS','BIOSCI','BIOCHEM','BME',
                'CAMPREC','CBEMS','CBE','CEM','CHC/LAT','CHEM','CHINESE','CLASSIC','CLT&THY','COGS','COMLIT','COMPSCI','CRITISM','CRM/LAW','CSE','DANCE','DERM','DEV BIO','DRAMA',
@@ -36,7 +36,7 @@ def add_multiple_classes(line):
                 department = course_info[0]
                 course_num = course_info[1]    
                 offered_courses[department] = [course_num]   
-                offered_courses['option'] = True
+                #offered_courses['option'] = True
                 offered_courses = expand_courses(offered_courses)                      
                 offered_courses = schedule_checker(offered_courses)
                 return offered_courses
@@ -65,12 +65,11 @@ def add_single_class(line):
     for dept in departments:       
         if dept in requirement:
             if requirement[-1] == 'and' or requirement[-1] == 'or':
-                offered_courses['option'] = True
+                #offered_courses['option'] = True
                 course_num = requirement[-2]
-                offered_courses[dept] = [course_num]
             else:
                 course_num = requirement[-1]
-                offered_courses[dept] = [course_num]
+            offered_courses[dept] = [course_num]
 
     offered_courses = expand_courses(offered_courses)
     offered_courses = schedule_checker(offered_courses)    
@@ -79,35 +78,41 @@ def add_single_class(line):
 
 def create_master_requirement(all_courses, lines, i):
     '''Initializes master requirement with empty list. Sub requirements will eventually populate the list.'''
-    master_req = clean_line(lines[i-1])
-    all_courses.append([master_req,[]])    
+    name = clean_line(lines[i-1])
+    master_req = MasterRequirement(name)
+    all_courses.append(master_req)    
 
 def add_to_master_requirement(all_courses, i, lines, offered):
     '''Add sub requirement to its respective overall requirement.'''
-    if 'Lower-Division Writing' in all_courses[-1][0]:                                    
-        if 'Choose' in lines[i-2]:
-            not_complete = clean_line(lines[i-3])                        
-            all_courses[-1][1].append([not_complete,offered])                           
-            
-        # else:
-        #     all_courses[-1][1][1].update(offered)
-    else:
-        for x in range(15):                                       
-            if 'yet' in lines[i-x]:
-                not_complete = clean_line(lines[i-x])                        
-                all_courses[-1][1].append((not_complete,offered))                           
-                break
+    #testing or functionality here
+# =============================================================================
+#     if 'Lower-Division Writing' in all_courses[-1][0]:                                    
+#         if 'Choose' in lines[i-2]:
+#             name = clean_line(lines[i-3])  
+#             sub_req = SubRequirement(name, offered)                      
+#             all_courses[-1].fulfilled_by.append(sub_req)                           
+#     else:
+# =============================================================================
+    for x in range(15):                                       
+        if 'yet' in lines[i-x]:
+            name = clean_line(lines[i-x])                        
+            sub_req = SubRequirement(name, offered)                      
+            all_courses[-1].fulfilled_by.append(sub_req)                           
+            break
 
 
 def add_standalone_requirement(all_courses, line, i, lines):
     '''Deals with a requirement that has no sub requirements. Adds requirement + courses to all_courses list.'''
-    master_req = clean_line(lines[i-1])
+    name = clean_line(lines[i-1])
+    
     if ',' in line:
         offered = add_multiple_classes(line)                                                                                                            
 
     else:
         offered = add_single_class(line)    
-    all_courses.append([master_req,[offered]])
+
+    requirement = Requirement(name,offered)
+    all_courses.append(requirement)
 
 
 def read_input(degreeworks_data):
@@ -132,6 +137,19 @@ def read_input(degreeworks_data):
 
             if offered_courses is not None:
                 add_to_master_requirement(all_courses, i, lines, offered_courses)    
+    for big_req in all_courses:
+        if type(big_req) == MasterRequirement:
+            print(big_req.name)
+            for sub_req in big_req.fulfilled_by:
+                print('\t',sub_req.name)
+                for dept in sub_req.classes:
+                    for course in sub_req.classes[dept]:
+                        print('\t\t', course.title)
+        else:
+            print(big_req.name)
+            for dept in big_req.classes:
+                for course in big_req.classes[dept]:
+                    print('\t', course.title)
     return all_courses
     
 
@@ -185,17 +203,22 @@ def expand_courses(courses):
                     
 def schedule_checker(courses): 
     '''takes courses dict from each line and returns only the courses that are offered as a list'''  #this static file is the pre-downloaded schedule of classes and will be updated at some constant interval
-    offered = []
+    offered = {}
 
     with open('soc.json','r') as f:
         soc = json.load(f)
         for dept in courses:
-            if dept != "option":
-                for course in soc[dept]:
-                    if course['num'] in courses[dept]:
-                        offered.append((dept,course)) 
-    if 'option' in courses and len(offered) > 0:
-        offered.append('True')
+            for course in soc[dept]:
+                if course['num'] in courses[dept]:
+                    course = Course(course)
+                    if dept in offered:
+                        offered[dept].append(course) 
+                    else:
+                        offered[dept] = [course]
+    # if 'option' in courses and len(offered) > 0:
+    #     offered.append('True')
+    for dept in offered:
+        print(offered[dept][0].offerings)
     return offered
 
 

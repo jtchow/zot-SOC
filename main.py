@@ -29,7 +29,7 @@ def index():
     if form.validate_on_submit():
         degreeworks = form.degreeworks.data
         courses = read_input(degreeworks)
-        return render_template('index1.html',courses=courses)
+        return render_template('index2.html',courses=courses)
     return render_template('form1.html',form=form)
 
 
