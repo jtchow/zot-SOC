@@ -25,7 +25,7 @@ def clean_line(line):
 
 
 def add_multiple_classes(line): 
-    '''Deals with lines that are like ECON20, 21, 22.'''                                
+    """Deals with input lines that contain multiple classes. Ex: ECON20, 21, 22, ENGR1, 2, 3 """                                
     offered_courses = {}
 
     courses = line.split(',')
@@ -58,18 +58,25 @@ def add_multiple_classes(line):
 
 
 def add_single_class(line):
-    '''Deals with lines only containing one class. Ex: 1 Class in ECON 20.'''
+    """Deals with lines only containing one class. Ex: 1 Class in ECON 20."""
     offered_courses = {}
 
     requirement = line.split()                             
-    for dept in departments:       
-        if dept in requirement:
-            if requirement[-1] == 'and' or requirement[-1] == 'or':
-                #offered_courses['option'] = True
-                course_num = requirement[-2]
-            else:
-                course_num = requirement[-1]
-            offered_courses[dept] = [course_num]
+    # for dept in departments:       
+    #     if dept in requirement:
+    #         if requirement[-1] == 'and' or requirement[-1] == 'or':
+    #             #offered_courses['option'] = True
+    #             course_num = requirement[-2]
+    #         else:
+    #             course_num = requirement[-1]
+    #         offered_courses[dept] = [course_num]
+
+    if requirement[-1] == 'and' or requirement[-1] == 'or':
+        pass        #TODO add something here
+
+    course_num = requirement[1]
+    dept = requirement[0]
+    offered_courses[dept] = [course_num]
 
     offered_courses = expand_courses(offered_courses)
     offered_courses = schedule_checker(offered_courses)    
@@ -77,13 +84,14 @@ def add_single_class(line):
 
 
 def create_master_requirement(all_courses, lines, i):
-    '''Initializes master requirement with empty list. Sub requirements will eventually populate the list.'''
-    name = clean_line(lines[i-1])
-    master_req = MasterRequirement(name)
+    """Creates master requirement object with a fulfilled_by attribute that is an empty list. 
+    Sub requirements will eventually populate the list."""
+    requirement_name = clean_line(lines[i-1])
+    master_req = MasterRequirement(requirement_name)
     all_courses.append(master_req)    
 
 def add_to_master_requirement(all_courses, i, lines, offered):
-    '''Add sub requirement to its respective overall requirement.'''
+    """Add sub requirement to its respective overall requirement."""
     #testing or functionality here
 # =============================================================================
 #     if 'Lower-Division Writing' in all_courses[-1][0]:                                    
@@ -93,8 +101,8 @@ def add_to_master_requirement(all_courses, i, lines, offered):
 #             all_courses[-1].fulfilled_by.append(sub_req)                           
 #     else:
 # =============================================================================
-    for x in range(15):                                       
-        if 'yet' in lines[i-x]:
+    for x in range(15):                              #arbitrary range                           
+        if 'yet' in lines[i-x]:                      #"yet" marker denotes the name of a requirement. Example: "Not yet complete: Econ 20"
             name = clean_line(lines[i-x])                        
             sub_req = SubRequirement(name, offered)                      
             all_courses[-1].fulfilled_by.append(sub_req)                           
@@ -102,36 +110,39 @@ def add_to_master_requirement(all_courses, i, lines, offered):
 
 
 def add_standalone_requirement(all_courses, line, i, lines):
-    '''Deals with a requirement that has no sub requirements. Adds requirement + courses to all_courses list.'''
-    name = clean_line(lines[i-1])
-    
+    """Adds a requirement that has no sub requirements to the all_courses list."""
+    requirement_name = clean_line(lines[i-1])    
     if ',' in line:
-        offered = add_multiple_classes(line)                                                                                                            
-
+        offered = add_multiple_classes(line)                                                                                                          
     else:
         offered = add_single_class(line)    
 
-    requirement = Requirement(name,offered)
+    requirement = Requirement(requirement_name,offered)
     all_courses.append(requirement)
 
 
 def read_input(degreeworks_data):
-    '''Takes user input of their degreeworks and outputs list of all requirements 
-    with the associated courses that are offered for current quarter.'''                                
+    """Takes user input and outputs their degree requirements 
+    and only the relevant courses that are offered next quarter."""                                
     all_courses = []
     lines = degreeworks_data.splitlines()
     for i,line in enumerate(lines):
-        line = clean_line(line)                                                  
+        line = clean_line(line)                 
+
+        #Ex: "Still needed: 1 class in Econ20"                                 
         if 'Still' in line and 'Class' in line:                                 
             add_standalone_requirement(all_courses, line, i, lines)
 
+        #Ex: "Still needed: 3 classes Category IV"
         elif 'Still' in line:
             create_master_requirement(all_courses, lines, i)
 
-        elif 'Class' in line:                              
+        elif 'Class' in line:  
+            #Ex: "2 classes in Econ20, 21, 22"                            
             if ',' in line:                                 
-                offered_courses = add_multiple_classes(line)        
+                offered_courses = add_multiple_classes(line)   
 
+            #Ex: "1 classes in Econ20"
             else:
                 offered_courses = add_single_class(line)
 
@@ -153,19 +164,17 @@ def read_input(degreeworks_data):
     return all_courses
     
 
-def add_ranges(course, course_nums):
-    '''Adds ranges of classes to dictionary. Ex: ECON 20:25'''
+def add_ranges(course, course_list):
+    """Adds ranges of classes. Ex: ECON 20:25"""
     numbers = course.split(':')
     start = int(numbers[0])
     end = int(numbers[1])
     for x in range(start,end+1):                                   
         course_nums.append(str(x))  
     
-    #TODO add return logic
-    
 
 def add_unknowns(course, course_list):
-    '''Adds classes that could be any number or letter. Ex: ECON 10@'''
+    """Adds classes that could be any number or letter. Ex: ECON 10@"""
     alphabet = ['A','B','C','D','E','F']
     if int(course[0]) > 1:
         for letter in alphabet:
@@ -181,28 +190,26 @@ def add_unknowns(course, course_list):
         for letter in alphabet:
             new_course = str(course[0:3])+letter
             course_list.append(new_course)
-    
-    #TODO add return logic 
- 
+
 
 def expand_courses(courses):
-    '''reads requirements dict and if theres 111:121 or 12@ then it updates dict to include additional course numbers.'''
-    for department in courses.values():  
-        if type(department) is not bool:           
-            for course in department:            
+    """reads requirements dict and updates it for special cases to include additional course numbers."""
+    for department_courses in courses.values():  
+        if type(department_courses) is not bool:           
+            for course in department_courses:            
                 if ':' in course:
-                    add_ranges(course, department)
-                    department.remove(course) 
+                    add_ranges(course, department_courses)
+                    department_courses.remove(course) 
     
                 elif '@' in course: 
-                    add_unknowns(course, department)
-                    department.remove(course)
+                    add_unknowns(course, department_courses)
+                    department_courses.remove(course)
             
     return courses
 
                     
 def schedule_checker(courses): 
-    '''takes courses dict from each line and returns only the courses that are offered as a list'''  #this static file is the pre-downloaded schedule of classes and will be updated at some constant interval
+    """takes courses dict and returns only the courses that are offered"""  #this static file is the pre-downloaded schedule of classes and will be updated at some constant interval
     offered = {}
 
     with open('soc.json','r') as f:
@@ -217,8 +224,6 @@ def schedule_checker(courses):
                         offered[dept] = [course]
     # if 'option' in courses and len(offered) > 0:
     #     offered.append('True')
-    for dept in offered:
-        print(offered[dept][0].offerings)
     return offered
 
 
