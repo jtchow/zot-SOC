@@ -152,22 +152,83 @@
             {% elif big_req.is_empty == True %}
                 <button class="collapsible-empty">BIG REQUIREMENT: {{big_req.name}} </button>
             {% endif %}
-
+            
+            <!-- If big_req is a master req then show the subreq name buttons -->
+            {% if big_req.is_master_req == True %}
             <div class="content">
-                <!-- If big_req is a master req then show the subreq name buttons -->
-                {% if big_req.is_master_req == True %}
-                    {% for sub_req in big_req.fulfilled_by %}
-                        <button class="collapsible">Sub REQUIREMENT: {{sub_req.name}}</button>
-                    {% endfor %}
-                <!-- If its just a regular requirement then show the classes in it -->
-                {% elif big_req.is_master_req == False %}
-                    {% for dept in big_req.classes %}
-                        {% for course in big_req.classes[dept] %}
-                            <button class="collapsible">{{dept}} {{course.num}}: {{course.title}}</button>
+                {% for sub_req in big_req.fulfilled_by %}
+                    {% if sub_req.is_empty == False %}
+                        <button class="collapsible subreq">Sub REQUIREMENT: {{sub_req.name}}</button>
+                    {% elif sub_req.is_empty == False %}
+                        <button class="collapsible-empty subreq">Sub REQUIREMENT: {{sub_req.name}}</button>
+                    {% endif %}
+
+                    <!-- display class name buttons within the subreq -->
+                    <div class="content">
+                        {% for dept in sub_req.classes %}
+                            {% for course in sub_req.classes[dept] %}
+                                <button class="collapsible course">{{dept}} {{course.num}}: {{course.title}}</button>
+                                <!-- Display the classes -->
+                                <table class='course'>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Type</th>
+                                        <th>Professor</th>
+                                        <th>Time</th>
+                                        <th>Location</th>
+                                        <th>Max</th>
+                                        <th>Enrolled</th>
+                                        <th>Waitlist</th>
+                                        <th>Restrictions</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    {% for offering in course.offerings %}
+                                        <tr>
+                                            {% for attr in offering.values() %}
+                                                <td> {{attr}} </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
-                {% endif %}
+                    </div>
+                {% endfor %}  
             </div>
+                
+            <!-- If its just a regular requirement then show the classes in it -->
+            {% elif big_req.is_master_req == False %}
+            <div class="content">
+                {% for dept in big_req.classes %}
+                    {% for course in big_req.classes[dept] %}
+                        <button class="collapsible">{{dept}} {{course.num}}: {{course.title}}</button>
+                        <!-- Display the classes -->
+                        <table class='course'>
+                            <tr>
+                                <th>Code</th>
+                                <th>Type</th>
+                                <th>Professor</th>
+                                <th>Time</th>
+                                <th>Location</th>
+                                <th>Max</th>
+                                <th>Enrolled</th>
+                                <th>Waitlist</th>
+                                <th>Restrictions</th>
+                                <th>Status</th>
+                            </tr>
+                            {% for offering in course.offerings %}
+                                <tr>
+                                    {% for attr in offering.values() %}
+                                        <td> {{attr}} </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+            </div>
+
         {% endfor %}      
     </body>
 
