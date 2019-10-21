@@ -19,6 +19,7 @@ departments = ['ACENG','AFAM','ANATOMY','ANESTH','ANTHRO','ARABIC','ARMN','ART H
 
 def clean_line(line):
     line = ''.join(s for s in line if ord(s)>31 and ord(s)<126)
+    line = line.replace('(','')
     line = line.replace(')','')
     line = line.replace('Not yet complete','')
     return line
@@ -70,16 +71,18 @@ def add_single_class(line):
     #         else:
     #             course_num = requirement[-1]
     #         offered_courses[dept] = [course_num]
-
     if requirement[-1] == 'and' or requirement[-1] == 'or':
-        pass        #TODO add something here
-
-    course_num = requirement[1]
-    dept = requirement[0]
-    offered_courses[dept] = [course_num]
+        course_num = requirement[-2]
+        dept = requirement[-3]
+    else:
+        course_num = requirement[-1]
+        dept = requirement[-2]
+        
+    if course_num[0].isdigit():
+        offered_courses[dept] = [course_num]
 
     offered_courses = expand_courses(offered_courses)
-    offered_courses = schedule_checker(offered_courses)    
+    offered_courses = schedule_checker(offered_courses)  
     return offered_courses
 
 
@@ -121,21 +124,35 @@ def add_standalone_requirement(all_courses, line, i, lines):
     all_courses.append(requirement)
 
 
+def empty_checker(all_requirements):
+    for requirement in all_requirements:   
+        if type(requirement) == MasterRequirement:
+            for sub_req in requirement.fulfilled_by:
+                if len(sub_req.classes) != 0:
+                    sub_req.is_empty = False
+                    requirement.is_empty = False
+
+        elif type(requirement) == Requirement:
+            #print(requirement.name,': ', requirement.classes)
+            if len(requirement.classes) != 0:
+                requirement.is_empty = False
+
+
 def read_input(degreeworks_data):
     """Takes user input and outputs their degree requirements 
     and only the relevant courses that are offered next quarter."""                                
-    all_courses = []
+    all_requirements = []
     lines = degreeworks_data.splitlines()
     for i,line in enumerate(lines):
         line = clean_line(line)                 
 
         #Ex: "Still needed: 1 class in Econ20"                                 
         if 'Still' in line and 'Class' in line:                                 
-            add_standalone_requirement(all_courses, line, i, lines)
+            add_standalone_requirement(all_requirements, line, i, lines)
 
         #Ex: "Still needed: 3 classes Category IV"
         elif 'Still' in line:
-            create_master_requirement(all_courses, lines, i)
+            create_master_requirement(all_requirements, lines, i)
 
         elif 'Class' in line:  
             #Ex: "2 classes in Econ20, 21, 22"                            
@@ -147,21 +164,28 @@ def read_input(degreeworks_data):
                 offered_courses = add_single_class(line)
 
             if offered_courses is not None:
-                add_to_master_requirement(all_courses, i, lines, offered_courses)    
-    for big_req in all_courses:
-        if type(big_req) == MasterRequirement:
-            print(big_req.name)
-            for sub_req in big_req.fulfilled_by:
-                print('\t',sub_req.name)
-                for dept in sub_req.classes:
-                    for course in sub_req.classes[dept]:
-                        print('\t\t', course.title)
-        else:
-            print(big_req.name)
-            for dept in big_req.classes:
-                for course in big_req.classes[dept]:
-                    print('\t', course.title)
-    return all_courses
+                add_to_master_requirement(all_requirements, i, lines, offered_courses)    
+
+    empty_checker(all_requirements)
+    
+        
+# =============================================================================
+#     for big_req in all_requirements:
+#         if type(big_req) == MasterRequirement:
+#             print(big_req.name, ': ', big_req.is_empty)
+#             for sub_req in big_req.fulfilled_by:
+#                 print('\t',sub_req.name)
+#                 print('\t',sub_req.is_empty)
+#                 for dept in sub_req.classes:
+#                     for course in sub_req.classes[dept]:
+#                         print('\t\t', course.title)
+#         else:
+#             print(big_req.name, ': ', len(big_req.classes), big_req.is_empty)
+#             for dept in big_req.classes:
+#                 for course in big_req.classes[dept]:
+#                     print('\t', course.title)
+# =============================================================================
+    return all_requirements
     
 
 def add_ranges(course, course_list):
@@ -170,7 +194,7 @@ def add_ranges(course, course_list):
     start = int(numbers[0])
     end = int(numbers[1])
     for x in range(start,end+1):                                   
-        course_nums.append(str(x))  
+        course_list.append(str(x))  
     
 
 def add_unknowns(course, course_list):
@@ -230,6 +254,6 @@ def schedule_checker(courses):
 if __name__ == '__main__':
     degreeworks = input()
     read_input(degreeworks) 
-        
+    
             
             

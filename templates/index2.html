@@ -146,8 +146,29 @@
 
     <body>
         {% for big_req in courses %}
-            
-        {% endfor %}
+        <!-- Display all big_requirement buttons -->
+            {% if big_req.is_empty == False %}
+                <button class="collapsible">BIG REQUIREMENT: {{big_req.name}}</button>
+            {% elif big_req.is_empty == True %}
+                <button class="collapsible-empty">BIG REQUIREMENT: {{big_req.name}} </button>
+            {% endif %}
+
+            <div class="content">
+                <!-- If big_req is a master req then show the subreq name buttons -->
+                {% if big_req.is_master_req == True %}
+                    {% for sub_req in big_req.fulfilled_by %}
+                        <button class="collapsible">Sub REQUIREMENT: {{sub_req.name}}</button>
+                    {% endfor %}
+                <!-- If its just a regular requirement then show the classes in it -->
+                {% elif big_req.is_master_req == False %}
+                    {% for dept in big_req.classes %}
+                        {% for course in big_req.classes[dept] %}
+                            <button class="collapsible">{{dept}} {{course.num}}: {{course.title}}</button>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}      
     </body>
 
     <script>

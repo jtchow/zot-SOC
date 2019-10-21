@@ -1,12 +1,13 @@
 #Requirement classes
 class Requirement:
     '''Any requirement that doesn't have sub requirements.\n
-    fulfilled_by structure: { DEPT: [ Course1, Course2 ] }
+    classes structure: { DEPT: [ Course1, Course2 ] }
     '''
     def __init__(self, name, classes):
         self.name = name
         self.classes = classes
         self.is_master_req = False
+        self.is_empty = True
 
 class MasterRequirement:
     '''Could have one or multiple subrequirements to fulfill it.\n
@@ -15,12 +16,14 @@ class MasterRequirement:
         self.name = name
         self.fulfilled_by = []  
         self.is_master_req = True
+        self.is_empty = True
 
 class SubRequirement(Requirement):
     ''' fulfill part of a requirement '''
     def __init__(self, name, classes):
         self.name = name
         self.classes = classes
+        self.is_empty = True
 
 
 
