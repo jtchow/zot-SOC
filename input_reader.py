@@ -63,14 +63,6 @@ def add_single_class(line):
     offered_courses = {}
 
     requirement = line.split()                             
-    # for dept in departments:       
-    #     if dept in requirement:
-    #         if requirement[-1] == 'and' or requirement[-1] == 'or':
-    #             #offered_courses['option'] = True
-    #             course_num = requirement[-2]
-    #         else:
-    #             course_num = requirement[-1]
-    #         offered_courses[dept] = [course_num]
     if requirement[-1] == 'and' or requirement[-1] == 'or':
         course_num = requirement[-2]
         dept = requirement[-3]
@@ -93,23 +85,18 @@ def create_master_requirement(all_courses, lines, i):
     master_req = MasterRequirement(requirement_name)
     all_courses.append(master_req)    
 
-def add_to_master_requirement(all_courses, i, lines, offered):
+def add_to_bigger_requirement(all_courses, i, lines, offered, choose_number):
     """Add sub requirement to its respective overall requirement."""
-    #testing or functionality here
-# =============================================================================
-#     if 'Lower-Division Writing' in all_courses[-1][0]:                                    
-#         if 'Choose' in lines[i-2]:
-#             name = clean_line(lines[i-3])  
-#             sub_req = SubRequirement(name, offered)                      
-#             all_courses[-1].fulfilled_by.append(sub_req)                           
-#     else:
-# =============================================================================
     for x in range(15):                              #arbitrary range                           
         if 'yet' in lines[i-x]:                      #"yet" marker denotes the name of a requirement. Example: "Not yet complete: Econ 20"
             name = clean_line(lines[i-x])                        
-            sub_req = SubRequirement(name, offered)                      
-            all_courses[-1].fulfilled_by.append(sub_req)                           
-            break
+            req = Requirement(name, offered)  
+            if choose_number > 0:        
+                all_courses[-1].fulfilled_by[-1].fulfilled_by.append(req)
+                break
+            else:
+                all_courses[-1].fulfilled_by.append(req) 
+                break
 
 
 def add_single_requirement(all_courses, line, i, lines):
@@ -122,6 +109,16 @@ def add_single_requirement(all_courses, line, i, lines):
 
     requirement = SingleRequirement(requirement_name,offered)
     all_courses.append(requirement)
+    
+def get_choose_number(line):
+    line_info = line.split()
+    choose_number = int(line_info[2])
+    return choose_number
+
+def create_sub_requirement(all_courses, lines, i):
+    requirement_name = clean_line(lines[i-1])
+    sub_req = SubRequirement(requirement_name)
+    all_courses[-1].fulfilled_by.append(sub_req)  
 
 
 def empty_checker(all_requirements):
@@ -133,7 +130,6 @@ def empty_checker(all_requirements):
                     requirement.is_empty = False
 
         elif type(requirement) == Requirement:
-            #print(requirement.name,': ', requirement.classes)
             if len(requirement.classes) != 0:
                 requirement.is_empty = False
 
@@ -143,6 +139,8 @@ def read_input(degreeworks_data):
     and only the relevant courses that are offered next quarter."""                                
     all_requirements = []
     lines = degreeworks_data.splitlines()
+    choose_number = 0
+    
     for i,line in enumerate(lines):
         line = clean_line(line)                 
 
@@ -154,6 +152,12 @@ def read_input(degreeworks_data):
         elif 'Still' in line:
             create_master_requirement(all_requirements, lines, i)
 
+        elif 'Choose' in line:
+            create_sub_requirement(all_requirements,lines,i)
+            choices = get_choose_number(line)
+            choose_number += choices
+            
+
         elif 'Class' in line:  
             #Ex: "2 classes in Econ20, 21, 22"                            
             if ',' in line:                                 
@@ -164,27 +168,24 @@ def read_input(degreeworks_data):
                 offered_courses = add_single_class(line)
 
             if offered_courses is not None:
-                add_to_master_requirement(all_requirements, i, lines, offered_courses)    
+                add_to_bigger_requirement(all_requirements, i, lines, offered_courses, choose_number)  
+                if choose_number > 0:
+                    choose_number -= 1
 
-    empty_checker(all_requirements)
-    
+    #empty_checker(all_requirements)
+    for big_requirement in all_requirements:
+        print(big_requirement.name)
+        if type(big_requirement) != SingleRequirement:            
+            for requirement in big_requirement.fulfilled_by:
+                if type(requirement) == SubRequirement:
+                    print('\t',requirement.name)
+                    for req in requirement.fulfilled_by:
+                        print('\t\t', req.name)
+                else:
+                    print('\t',requirement.name)
+        else:
+            print('\t',big_requirement.classes)
         
-# =============================================================================
-#     for big_req in all_requirements:
-#         if type(big_req) == MasterRequirement:
-#             print(big_req.name, ': ', big_req.is_empty)
-#             for sub_req in big_req.fulfilled_by:
-#                 print('\t',sub_req.name)
-#                 print('\t',sub_req.is_empty)
-#                 for dept in sub_req.classes:
-#                     for course in sub_req.classes[dept]:
-#                         print('\t\t', course.title)
-#         else:
-#             print(big_req.name, ': ', len(big_req.classes), big_req.is_empty)
-#             for dept in big_req.classes:
-#                 for course in big_req.classes[dept]:
-#                     print('\t', course.title)
-# =============================================================================
     return all_requirements
     
 
@@ -246,8 +247,6 @@ def schedule_checker(courses):
                         offered[dept].append(course) 
                     else:
                         offered[dept] = [course]
-    # if 'option' in courses and len(offered) > 0:
-    #     offered.append('True')
     return offered
 
 

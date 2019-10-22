@@ -24,9 +24,9 @@ class MasterRequirement:
 
 class SubRequirement():
     ''' fulfill part of a requirement '''
-    def __init__(self, name, classes):
+    def __init__(self, name):
         self.name = name
-        self.classes = classes
+        self.fulfilled_by = []
         self.is_sub_req = True
         self.is_empty = True
         
