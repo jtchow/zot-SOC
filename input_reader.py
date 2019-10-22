@@ -173,18 +173,18 @@ def read_input(degreeworks_data):
                     choose_number -= 1
 
     #empty_checker(all_requirements)
-    for big_requirement in all_requirements:
-        print(big_requirement.name)
-        if type(big_requirement) != SingleRequirement:            
-            for requirement in big_requirement.fulfilled_by:
-                if type(requirement) == SubRequirement:
-                    print('\t',requirement.name)
-                    for req in requirement.fulfilled_by:
-                        print('\t\t', req.name)
-                else:
-                    print('\t',requirement.name)
-        else:
-            print('\t',big_requirement.classes)
+    # for big_requirement in all_requirements:
+    #     print(big_requirement.name)
+    #     if type(big_requirement) != SingleRequirement:            
+    #         for requirement in big_requirement.fulfilled_by:
+    #             if type(requirement) == SubRequirement:
+    #                 print('\t',requirement.name)
+    #                 for req in requirement.fulfilled_by:
+    #                     print('\t\t', req.name)
+    #             else:
+    #                 print('\t',requirement.name)
+    #     else:
+    #         print('\t',big_requirement.classes)
         
     return all_requirements
     

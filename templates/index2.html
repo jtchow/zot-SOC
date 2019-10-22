@@ -59,6 +59,19 @@
         border: 1px solid #838383;
     }
 
+    .subsubreq {
+        background-color: #eee;
+        color: #444;
+        padding: 12px;
+        font-size: 15px;
+        border: thin;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+        margin-left:4%;
+        border: 1px solid #838383;
+    }
+
     .course {
         background-color: #eee;
         color: #444;
@@ -76,8 +89,13 @@
         margin-left:4%;
     }
 
-    .active, .collapsible:hover, .subreq:hover {
-        background-color:#DCF2FF;
+    .active {
+        background-color: #DCF2FF;
+    }
+
+    .collapsible:hover, .subreq:hover {
+        background-color: rgb(9, 96, 146);
+        color: white;
     }
 
     .content {
@@ -150,49 +168,91 @@
             {% if big_req.is_empty == False %}
                 <button class="collapsible">BIG REQUIREMENT: {{big_req.name}}</button>
             {% elif big_req.is_empty == True %}
-                <button class="collapsible-empty">BIG REQUIREMENT: {{big_req.name}} </button>
+                <button class="collapsible">BIG REQUIREMENT: {{big_req.name}} </button>
             {% endif %}
             
             <!-- If big_req is a master req then show the subreq name buttons -->
             {% if big_req.is_master_req == True %}
             <div class="content">
-                {% for sub_req in big_req.fulfilled_by %}
-                    {% if sub_req.is_empty == False %}
-                        <button class="collapsible subreq">Sub REQUIREMENT: {{sub_req.name}}</button>
-                    {% elif sub_req.is_empty == False %}
-                        <button class="collapsible-empty subreq">Sub REQUIREMENT: {{sub_req.name}}</button>
+                {% for small_req in big_req.fulfilled_by %}
+                    {% if small_req.is_empty == False %}
+                        <button class="collapsible subreq">Sub REQUIREMENT: {{small_req.name}}</button>
+                    {% elif small_req.is_empty == True %}
+                        <button class="collapsible subreq">Sub REQUIREMENT: {{small_req.name}}</button>
+                    {% endif %}
+                    
+                    {% if small_req.is_sub_req == True %}
+                        <div class="content">
+                        {% for req in small_req.fulfilled_by %}                        
+                            <button class="collapsible subsubreq">Subsub REQUIREMENT: {{req.name}}</button>
+
+                            <div class="content">
+                            {% for dept in req.classes %}
+                                {% for course in req.classes[dept] %}
+                                    <button class="collapsible course">{{dept}} {{course.num}}: {{course.title}}</button>
+                                    <!-- Display the classes -->
+                                    <table class='course'>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Type</th>
+                                            <th>Professor</th>
+                                            <th>Time</th>
+                                            <th>Location</th>
+                                            <th>Max</th>
+                                            <th>Enrolled</th>
+                                            <th>Waitlist</th>
+                                            <th>Restrictions</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        {% for offering in course.offerings %}
+                                            <tr>
+                                                {% for attr in offering.values() %}
+                                                    <td> {{attr}} </td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+
+                        {% endfor %}                  
+                        </div>
+                    
+                    {% elif small_req.is_sub_req == False %}
+                        <!-- display class name buttons within the subreq -->
+                        <div class="content">
+                            {% for dept in small_req.classes %}
+                                {% for course in small_req.classes[dept] %}
+                                    <button class="collapsible course">{{dept}} {{course.num}}: {{course.title}}</button>
+                                    <!-- Display the classes -->
+                                    <table class='course'>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Type</th>
+                                            <th>Professor</th>
+                                            <th>Time</th>
+                                            <th>Location</th>
+                                            <th>Max</th>
+                                            <th>Enrolled</th>
+                                            <th>Waitlist</th>
+                                            <th>Restrictions</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        {% for offering in course.offerings %}
+                                            <tr>
+                                                {% for attr in offering.values() %}
+                                                    <td> {{attr}} </td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+
                     {% endif %}
 
-                    <!-- display class name buttons within the subreq -->
-                    <div class="content">
-                        {% for dept in sub_req.classes %}
-                            {% for course in sub_req.classes[dept] %}
-                                <button class="collapsible course">{{dept}} {{course.num}}: {{course.title}}</button>
-                                <!-- Display the classes -->
-                                <table class='course'>
-                                    <tr>
-                                        <th>Code</th>
-                                        <th>Type</th>
-                                        <th>Professor</th>
-                                        <th>Time</th>
-                                        <th>Location</th>
-                                        <th>Max</th>
-                                        <th>Enrolled</th>
-                                        <th>Waitlist</th>
-                                        <th>Restrictions</th>
-                                        <th>Status</th>
-                                    </tr>
-                                    {% for offering in course.offerings %}
-                                        <tr>
-                                            {% for attr in offering.values() %}
-                                                <td> {{attr}} </td>
-                                            {% endfor %}
-                                        </tr>
-                                    {% endfor %}
-                                </table>
-                            {% endfor %}
-                        {% endfor %}
-                    </div>
                 {% endfor %}  
             </div>
                 
