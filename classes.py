@@ -1,13 +1,17 @@
 #Requirement classes
 class Requirement:
-    '''Any requirement that doesn't have sub requirements.\n
+    '''Requirement to fulfill part of the degree \n
     classes structure: { DEPT: [ Course1, Course2 ] }
     '''
     def __init__(self, name, classes):
         self.name = name
         self.classes = classes
         self.is_master_req = False
+        self.is_sub_req = False
         self.is_empty = True
+
+class SingleRequirement(Requirement):
+    '''Any big requirement that doesn't have sub-requirements. Same level as MasterRequirement'''
 
 class MasterRequirement:
     '''Could have one or multiple subrequirements to fulfill it.\n
@@ -18,15 +22,14 @@ class MasterRequirement:
         self.is_master_req = True
         self.is_empty = True
 
-class SubRequirement(Requirement):
+class SubRequirement():
     ''' fulfill part of a requirement '''
     def __init__(self, name, classes):
         self.name = name
         self.classes = classes
+        self.is_sub_req = True
         self.is_empty = True
-
-
-
+        
 #Course classes
 class Course:
     ''' example: ECON 20A  Microeconomics\n

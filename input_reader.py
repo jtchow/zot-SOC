@@ -112,7 +112,7 @@ def add_to_master_requirement(all_courses, i, lines, offered):
             break
 
 
-def add_standalone_requirement(all_courses, line, i, lines):
+def add_single_requirement(all_courses, line, i, lines):
     """Adds a requirement that has no sub requirements to the all_courses list."""
     requirement_name = clean_line(lines[i-1])    
     if ',' in line:
@@ -120,7 +120,7 @@ def add_standalone_requirement(all_courses, line, i, lines):
     else:
         offered = add_single_class(line)    
 
-    requirement = Requirement(requirement_name,offered)
+    requirement = SingleRequirement(requirement_name,offered)
     all_courses.append(requirement)
 
 
@@ -148,7 +148,7 @@ def read_input(degreeworks_data):
 
         #Ex: "Still needed: 1 class in Econ20"                                 
         if 'Still' in line and 'Class' in line:                                 
-            add_standalone_requirement(all_requirements, line, i, lines)
+            add_single_requirement(all_requirements, line, i, lines)
 
         #Ex: "Still needed: 3 classes Category IV"
         elif 'Still' in line:
