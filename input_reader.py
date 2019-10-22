@@ -37,7 +37,6 @@ def add_multiple_classes(line):
                 department = course_info[0]
                 course_num = course_info[1]    
                 offered_courses[department] = [course_num]   
-                #offered_courses['option'] = True
                 offered_courses = expand_courses(offered_courses)                      
                 offered_courses = schedule_checker(offered_courses)
                 return offered_courses
@@ -122,16 +121,24 @@ def create_sub_requirement(all_courses, lines, i):
 
 
 def empty_checker(all_requirements):
-    for requirement in all_requirements:   
-        if type(requirement) == MasterRequirement:
-            for sub_req in requirement.fulfilled_by:
-                if len(sub_req.classes) != 0:
-                    sub_req.is_empty = False
-                    requirement.is_empty = False
+    for big_requirement in all_requirements:   
+        if type(big_requirement) == MasterRequirement:
+            for small_req in big_requirement.fulfilled_by:
+                if type(small_req) == SubRequirement:
+                    for req in small_req.fulfilled_by:
+                        if len(req.classes) != 0:
+                            req.is_empty = False
+                            small_req.is_empty = False
+                            big_requirement.is_empty = False
+                else:
+                    if len(small_req.classes) != 0:
+                        big_requirement.is_empty = False
+                        small_req.is_empty = False
+                    
 
-        elif type(requirement) == Requirement:
-            if len(requirement.classes) != 0:
-                requirement.is_empty = False
+        elif type(big_requirement) == SingleRequirement:
+            if len(big_requirement.classes) != 0:
+                big_requirement.is_empty = False
 
 
 def read_input(degreeworks_data):
@@ -172,20 +179,7 @@ def read_input(degreeworks_data):
                 if choose_number > 0:
                     choose_number -= 1
 
-    #empty_checker(all_requirements)
-    # for big_requirement in all_requirements:
-    #     print(big_requirement.name)
-    #     if type(big_requirement) != SingleRequirement:            
-    #         for requirement in big_requirement.fulfilled_by:
-    #             if type(requirement) == SubRequirement:
-    #                 print('\t',requirement.name)
-    #                 for req in requirement.fulfilled_by:
-    #                     print('\t\t', req.name)
-    #             else:
-    #                 print('\t',requirement.name)
-    #     else:
-    #         print('\t',big_requirement.classes)
-        
+    empty_checker(all_requirements)
     return all_requirements
     
 

@@ -47,42 +47,15 @@
     }
 
     .subreq {
-        background-color: #eee;
-        color: #444;
-        padding: 12px;
-        font-size: 15px;
-        border: thin;
-        cursor: pointer;
-        width: 100%;
-        text-align: left;
         margin-left:2%;
-        border: 1px solid #838383;
     }
 
     .subsubreq {
-        background-color: #eee;
-        color: #444;
-        padding: 12px;
-        font-size: 15px;
-        border: thin;
-        cursor: pointer;
-        width: 100%;
-        text-align: left;
         margin-left:4%;
-        border: 1px solid #838383;
     }
 
     .course {
-        background-color: #eee;
-        color: #444;
-        padding: 12px;
-        font-size: 15px;
-        border: thin;
-        cursor: pointer;
-        width: 100%;
-        text-align: left;
         margin-left:4%;
-        border: 1px solid #838383;
     }
 
     table {
@@ -168,7 +141,7 @@
             {% if big_req.is_empty == False %}
                 <button class="collapsible">BIG REQUIREMENT: {{big_req.name}}</button>
             {% elif big_req.is_empty == True %}
-                <button class="collapsible">BIG REQUIREMENT: {{big_req.name}} </button>
+                <button class="collapsible-empty">BIG REQUIREMENT: {{big_req.name}} </button>
             {% endif %}
             
             <!-- If big_req is a master req then show the subreq name buttons -->
@@ -178,13 +151,17 @@
                     {% if small_req.is_empty == False %}
                         <button class="collapsible subreq">Sub REQUIREMENT: {{small_req.name}}</button>
                     {% elif small_req.is_empty == True %}
-                        <button class="collapsible subreq">Sub REQUIREMENT: {{small_req.name}}</button>
+                        <button class="collapsible-empty subreq">Sub REQUIREMENT: {{small_req.name}}</button>
                     {% endif %}
                     
                     {% if small_req.is_sub_req == True %}
                         <div class="content">
-                        {% for req in small_req.fulfilled_by %}                        
-                            <button class="collapsible subsubreq">Subsub REQUIREMENT: {{req.name}}</button>
+                        {% for req in small_req.fulfilled_by %}
+                            {% if req.is_empty == False %}                        
+                                <button class="collapsible subsubreq">Subsub REQUIREMENT: {{req.name}}</button>
+                            {% elif req.is_empty == True %}
+                                <button class="collapsible-empty subsubreq">Subsub REQUIREMENT: {{req.name}}</button>
+                            {% endif %}
 
                             <div class="content">
                             {% for dept in req.classes %}
@@ -203,12 +180,14 @@
                                             <th>Waitlist</th>
                                             <th>Restrictions</th>
                                             <th>Status</th>
+                                            <th>Prerequisites</th>
                                         </tr>
                                         {% for offering in course.offerings %}
                                             <tr>
                                                 {% for attr in offering.values() %}
                                                     <td> {{attr}} </td>
                                                 {% endfor %}
+                                                <td>{{course.prereqs}}</td>
                                             </tr>
                                         {% endfor %}
                                     </table>
@@ -238,12 +217,14 @@
                                             <th>Waitlist</th>
                                             <th>Restrictions</th>
                                             <th>Status</th>
+                                            <th>Prerequisites</th>
                                         </tr>
                                         {% for offering in course.offerings %}
                                             <tr>
                                                 {% for attr in offering.values() %}
                                                     <td> {{attr}} </td>
                                                 {% endfor %}
+                                                <td>{{course.prereqs}}</td>
                                             </tr>
                                         {% endfor %}
                                     </table>
@@ -275,12 +256,14 @@
                                 <th>Waitlist</th>
                                 <th>Restrictions</th>
                                 <th>Status</th>
+                                <th>Prerequisites</th>
                             </tr>
                             {% for offering in course.offerings %}
                                 <tr>
                                     {% for attr in offering.values() %}
                                         <td> {{attr}} </td>
                                     {% endfor %}
+                                    <td>{{course.prereqs}}</td>
                                 </tr>
                             {% endfor %}
                         </table>
