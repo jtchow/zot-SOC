@@ -33,17 +33,8 @@
         border: 1px solid #838383;
     }
 
-    .collapsible-empty{
-        background-color:#eee;
+    .empty{
         color:rgb(230, 66, 66);
-        padding: 12px;
-        font-size: 15px;
-        border: thin;
-        cursor: pointer;
-        width: 100%;
-        text-align: left;
-        outline: none;
-        border: 1px solid #838383;
     }
 
     .subreq {
@@ -141,7 +132,7 @@
             {% if big_req.is_empty == False %}
                 <button class="collapsible">BIG REQUIREMENT: {{big_req.name}}</button>
             {% elif big_req.is_empty == True %}
-                <button class="collapsible-empty">BIG REQUIREMENT: {{big_req.name}} </button>
+                <button class="collapsible empty">BIG REQUIREMENT: {{big_req.name}} </button>
             {% endif %}
             
             <!-- If big_req is a master req then show the subreq name buttons -->
@@ -151,7 +142,7 @@
                     {% if small_req.is_empty == False %}
                         <button class="collapsible subreq">Sub REQUIREMENT: {{small_req.name}}</button>
                     {% elif small_req.is_empty == True %}
-                        <button class="collapsible-empty subreq">Sub REQUIREMENT: {{small_req.name}}</button>
+                        <button class="collapsible empty subreq">Sub REQUIREMENT: {{small_req.name}}</button>
                     {% endif %}
                     
                     {% if small_req.is_sub_req == True %}
@@ -160,7 +151,7 @@
                             {% if req.is_empty == False %}                        
                                 <button class="collapsible subsubreq">Subsub REQUIREMENT: {{req.name}}</button>
                             {% elif req.is_empty == True %}
-                                <button class="collapsible-empty subsubreq">Subsub REQUIREMENT: {{req.name}}</button>
+                                <button class="collapsible empty subsubreq">Subsub REQUIREMENT: {{req.name}}</button>
                             {% endif %}
 
                             <div class="content">

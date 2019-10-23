@@ -80,9 +80,18 @@ def add_single_class(line):
 def create_master_requirement(all_courses, lines, i):
     """Creates master requirement object with a fulfilled_by attribute that is an empty list. 
     Sub requirements will eventually populate the list."""
-    requirement_name = clean_line(lines[i-1])
-    master_req = MasterRequirement(requirement_name)
-    all_courses.append(master_req)    
+    #if you've already completed a class towards the requirement
+    if lines[i-1].split()[0] in departments:
+        for x in range(15):
+            if 'yet' in lines[i-x]:
+                requirement_name = clean_line(lines[i-x])
+                break  
+    #if you haven't
+    else:
+        requirement_name = clean_line(lines[i-1]) 
+        master_req = MasterRequirement(requirement_name)
+        all_courses.append(master_req)
+        
 
 def add_to_bigger_requirement(all_courses, i, lines, offered, choose_number):
     """Add sub requirement to its respective overall requirement."""
@@ -100,7 +109,15 @@ def add_to_bigger_requirement(all_courses, i, lines, offered, choose_number):
 
 def add_single_requirement(all_courses, line, i, lines):
     """Adds a requirement that has no sub requirements to the all_courses list."""
-    requirement_name = clean_line(lines[i-1])    
+    #if you've already completed a class towards the requirement
+    if lines[i-1].split()[0] in departments:
+        for x in range(15):
+            if 'yet' in lines[i-x]:
+                requirement_name = clean_line(lines[i-x])
+                break  
+    #if you haven't
+    else:
+        requirement_name = clean_line(lines[i-1]) 
     if ',' in line:
         offered = add_multiple_classes(line)                                                                                                          
     else:
