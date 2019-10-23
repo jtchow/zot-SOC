@@ -37,11 +37,11 @@
         color:rgb(230, 66, 66);
     }
 
-    .subreq {
+    .choice {
         margin-left:2%;
     }
 
-    .subsubreq {
+    .subreq {
         margin-left:4%;
     }
 
@@ -140,18 +140,18 @@
             <div class="content">
                 {% for small_req in big_req.fulfilled_by %}
                     {% if small_req.is_empty == False %}
-                        <button class="collapsible subreq">Sub REQUIREMENT: {{small_req.name}}</button>
+                        <button class="collapsible choice">CHOICE: {{small_req.name}}</button>
                     {% elif small_req.is_empty == True %}
-                        <button class="collapsible empty subreq">Sub REQUIREMENT: {{small_req.name}}</button>
+                        <button class="collapsible empty choice">CHOICE: {{small_req.name}}</button>
                     {% endif %}
                     
                     {% if small_req.is_sub_req == True %}
                         <div class="content">
                         {% for req in small_req.fulfilled_by %}
                             {% if req.is_empty == False %}                        
-                                <button class="collapsible subsubreq">Subsub REQUIREMENT: {{req.name}}</button>
+                                <button class="collapsible subreq">SUB REQUIREMENT: {{req.name}}</button>
                             {% elif req.is_empty == True %}
-                                <button class="collapsible empty subsubreq">Subsub REQUIREMENT: {{req.name}}</button>
+                                <button class="collapsible empty subreq">SUB REQUIREMENT: {{req.name}}</button>
                             {% endif %}
 
                             <div class="content">

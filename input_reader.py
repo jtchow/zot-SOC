@@ -80,13 +80,13 @@ def add_single_class(line):
 def create_master_requirement(all_courses, lines, i):
     """Creates master requirement object with a fulfilled_by attribute that is an empty list. 
     Sub requirements will eventually populate the list."""
-    #if you've already completed a class towards the requirement
+    #if you've already completed a class towards the requirement, the name is somewhere above 
     if lines[i-1].split()[0] in departments:
         for x in range(15):
             if 'yet' in lines[i-x]:
                 requirement_name = clean_line(lines[i-x])
                 break  
-    #if you haven't
+    #if you haven't then the name is the previous line
     else:
         requirement_name = clean_line(lines[i-1]) 
         master_req = MasterRequirement(requirement_name)
@@ -95,9 +95,12 @@ def create_master_requirement(all_courses, lines, i):
 
 def add_to_bigger_requirement(all_courses, i, lines, offered, choose_number):
     """Add sub requirement to its respective overall requirement."""
+    still_needed = lines[i].split()
+    still_needed_text = ' --- ' + still_needed[1] + ' ' + still_needed[2] + ' needed'
     for x in range(15):                              #arbitrary range                           
         if 'yet' in lines[i-x]:                      #"yet" marker denotes the name of a requirement. Example: "Not yet complete: Econ 20"
-            name = clean_line(lines[i-x])                        
+            name = clean_line(lines[i-x])
+            name += still_needed_text                        
             req = Requirement(name, offered)  
             if choose_number > 0:        
                 all_courses[-1].fulfilled_by[-1].fulfilled_by.append(req)
@@ -109,15 +112,19 @@ def add_to_bigger_requirement(all_courses, i, lines, offered, choose_number):
 
 def add_single_requirement(all_courses, line, i, lines):
     """Adds a requirement that has no sub requirements to the all_courses list."""
+    still_needed = lines[i].split()
+    still_needed_text = ' --- ' + still_needed[2] + ' ' + still_needed[3] + ' needed'
     #if you've already completed a class towards the requirement
     if lines[i-1].split()[0] in departments:
         for x in range(15):
             if 'yet' in lines[i-x]:
                 requirement_name = clean_line(lines[i-x])
+                requirement_name += still_needed_text
                 break  
     #if you haven't
     else:
         requirement_name = clean_line(lines[i-1]) 
+        requirement_name += still_needed_text
     if ',' in line:
         offered = add_multiple_classes(line)                                                                                                          
     else:
@@ -127,6 +134,7 @@ def add_single_requirement(all_courses, line, i, lines):
     all_courses.append(requirement)
     
 def get_choose_number(line):
+    """Gets number from line 'Choose 2 from the following' to make adding sub sub requirements easier"""
     line_info = line.split()
     choose_number = int(line_info[2])
     return choose_number
@@ -138,6 +146,7 @@ def create_sub_requirement(all_courses, lines, i):
 
 
 def empty_checker(all_requirements):
+    """Checks whether or not requirements are empty to make output easier"""
     for big_requirement in all_requirements:   
         if type(big_requirement) == MasterRequirement:
             for small_req in big_requirement.fulfilled_by:
