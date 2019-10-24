@@ -22,6 +22,7 @@ def clean_line(line):
     line = line.replace('(','')
     line = line.replace(')','')
     line = line.replace('Not yet complete','')
+    line = line.replace('Credits >= 4 ','')  
     return line
 
 
@@ -51,6 +52,7 @@ def add_multiple_classes(line):
         else:
             course_num = course.strip()
             offered_courses[last_dept_seen].append(course_num)
+    print(offered_courses)
 
     offered_courses = expand_courses(offered_courses)                      
     offered_courses = schedule_checker(offered_courses)
@@ -95,10 +97,10 @@ def create_master_requirement(all_courses, lines, i):
 
 def add_to_bigger_requirement(all_courses, i, lines, offered, choose_number):
     """Add sub requirement to its respective overall requirement."""
-    still_needed = lines[i].split()
-    still_needed_text = ' --- ' + still_needed[1] + ' ' + still_needed[2] + ' needed'
-    for x in range(15):                              #arbitrary range                           
-        if 'yet' in lines[i-x]:                      #"yet" marker denotes the name of a requirement. Example: "Not yet complete: Econ 20"
+    still_needed = lines[i].split('in')
+    still_needed_text = '  ---  Still need ' + still_needed[0]
+    for x in range(15):                                                                     #arbitrary range                           
+        if 'yet' in lines[i-x]:                                                             #"yet" marker denotes the name of a requirement. Example: "Not yet complete: Econ 20"
             name = clean_line(lines[i-x])
             name += still_needed_text                        
             req = Requirement(name, offered)  
@@ -112,8 +114,13 @@ def add_to_bigger_requirement(all_courses, i, lines, offered, choose_number):
 
 def add_single_requirement(all_courses, line, i, lines):
     """Adds a requirement that has no sub requirements to the all_courses list."""
-    still_needed = lines[i].split()
-    still_needed_text = ' --- ' + still_needed[2] + ' ' + still_needed[3] + ' needed'
+    if ',' in line:
+        offered = add_multiple_classes(line)                                                                                                          
+    else:
+        offered = add_single_class(line)  
+        
+    still_needed = lines[i].split('in')
+    still_needed_text = '  ---  Still need ' + still_needed[0]
     #if you've already completed a class towards the requirement
     if lines[i-1].split()[0] in departments:
         for x in range(15):
@@ -125,10 +132,7 @@ def add_single_requirement(all_courses, line, i, lines):
     else:
         requirement_name = clean_line(lines[i-1]) 
         requirement_name += still_needed_text
-    if ',' in line:
-        offered = add_multiple_classes(line)                                                                                                          
-    else:
-        offered = add_single_class(line)    
+      
 
     requirement = SingleRequirement(requirement_name,offered)
     all_courses.append(requirement)
@@ -191,7 +195,7 @@ def read_input(degreeworks_data):
             choose_number += choices
             
 
-        elif 'Class' in line:  
+        elif 'Class' in line and 'in' in line:  
             #Ex: "2 classes in Econ20, 21, 22"                            
             if ',' in line:                                 
                 offered_courses = add_multiple_classes(line)   
@@ -221,6 +225,7 @@ def add_ranges(course, course_list):
 def add_unknowns(course, course_list):
     """Adds classes that could be any number or letter. Ex: ECON 10@"""
     alphabet = ['A','B','C','D','E','F']
+    
     if int(course[0]) > 1:
         for letter in alphabet:
             new_course = str(course[0:2])+letter
@@ -235,20 +240,41 @@ def add_unknowns(course, course_list):
         for letter in alphabet:
             new_course = str(course[0:3])+letter
             course_list.append(new_course)
+            
+def add_honors_unknowns(course, course_list):
+    """Adds classes that could be any number or letter. Ex: ECON 10@"""
+    alphabet = ['A','B','C','D','E','F']
+    for x in range(0,10):    
+        tens_new_course = str(course[0:2]) + str(x)
+        course_list.append(tens_new_course)
+        for letter in alphabet:
+            new_course = tens_new_course + letter
+            course_list.append(new_course)
+        for i in range(0,10):
+            hundreds_new_course = tens_new_course + str(i)
+            for letter in alphabet:
+                new_course = hundreds_new_course + letter
+                course_list.append(new_course)
+        
+
 
 
 def expand_courses(courses):
     """reads requirements dict and updates it for special cases to include additional course numbers."""
     for department_courses in courses.values():  
-        if type(department_courses) is not bool:           
-            for course in department_courses:            
-                if ':' in course:
-                    add_ranges(course, department_courses)
-                    department_courses.remove(course) 
-    
-                elif '@' in course: 
+        for course in list(department_courses):        
+            #print(course)
+            if ':' in course:
+                add_ranges(course, department_courses)
+                department_courses.remove(course) 
+
+            elif '@' in course: 
+                if course[0] != 'H':
                     add_unknowns(course, department_courses)
-                    department_courses.remove(course)
+                else:
+                    add_honors_unknowns(course,department_courses)
+                department_courses.remove(course)
+        print(department_courses)
             
     return courses
 
@@ -271,8 +297,10 @@ def schedule_checker(courses):
 
 
 if __name__ == '__main__':
-    degreeworks = input()
-    read_input(degreeworks) 
+    #degreeworks = input()
+    courses = {'PSYCH': ['H1@', '11@', '12@', '13@', '14@', '15@', '16@', '17@', '19@'], 'PSYBEH': ['193E'], 'CRM/LAW': ['C105'], 'BIOSCI': ['D137', 'E174', 'N110', 'N159']}
+    #read_input(degreeworks) 
+    expand_courses(courses)
     
             
             
