@@ -52,7 +52,6 @@ def add_multiple_classes(line):
         else:
             course_num = course.strip()
             offered_courses[last_dept_seen].append(course_num)
-    print(offered_courses)
 
     offered_courses = expand_courses(offered_courses)                      
     offered_courses = schedule_checker(offered_courses)
@@ -97,7 +96,7 @@ def create_master_requirement(all_courses, lines, i):
 
 def add_to_bigger_requirement(all_courses, i, lines, offered, choose_number):
     """Add sub requirement to its respective overall requirement."""
-    still_needed = lines[i].split('in')
+    still_needed = clean_line(lines[i]).split('in')
     still_needed_text = '  ---  Still need ' + still_needed[0]
     for x in range(15):                                                                     #arbitrary range                           
         if 'yet' in lines[i-x]:                                                             #"yet" marker denotes the name of a requirement. Example: "Not yet complete: Econ 20"
@@ -263,7 +262,6 @@ def expand_courses(courses):
     """reads requirements dict and updates it for special cases to include additional course numbers."""
     for department_courses in courses.values():  
         for course in list(department_courses):        
-            #print(course)
             if ':' in course:
                 add_ranges(course, department_courses)
                 department_courses.remove(course) 
@@ -297,10 +295,8 @@ def schedule_checker(courses):
 
 
 if __name__ == '__main__':
-    #degreeworks = input()
-    courses = {'PSYCH': ['H1@', '11@', '12@', '13@', '14@', '15@', '16@', '17@', '19@'], 'PSYBEH': ['193E'], 'CRM/LAW': ['C105'], 'BIOSCI': ['D137', 'E174', 'N110', 'N159']}
-    #read_input(degreeworks) 
-    expand_courses(courses)
+    degreeworks = input()
+    read_input(degreeworks) 
     
             
             

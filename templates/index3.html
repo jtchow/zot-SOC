@@ -29,7 +29,6 @@
         font-size: 15px;
         border: thin;
         cursor: pointer;
-        width: 100%;
         text-align: left;
         border: 1px solid #838383;
         width: 66%;
@@ -71,8 +70,6 @@
         display: none;
         border-left: solid;
         border-color: #24ACFF;
-        width: 50%;
-        float: right;
     }
 
     .collapsible:after {
@@ -127,12 +124,23 @@
         display: inline-block;
     }
 
-    .big_req {
+    /* .big_req {
         margin-left: 8%;
+    } */
+    
+    .right {
+        width: 50%;
+        display: none;
+        float: right;
     }
 }
     
 </style>
+
+{% macro hi() -%}
+    <p>hellosdhflkdshliafhoihewoigfhoiwehoifhweoigf</p>
+{%- endmacro %}
+
 <html>
     <header>
         <h1>ZotSoc: DegreeWorks Course Planner</h1>
@@ -140,188 +148,179 @@
 
     <body>
         {% for big_req in courses %}
-            <div class="left">
+            <div>
                 <!-- Display all big_requirement buttons -->
                 {% if big_req.is_empty == False %}
-                    <button class="collapsible big_req">{{big_req.name}}</button>
+                    <div class="left big_req">
+                        <button type="button" class="collapsible" id="{{loop.index}}" >{{big_req.name}}</button>
+                    </div>
+
+                    <!-- If big_req is a master req then show the subreq name buttons -->
+                    {% if big_req.is_master_req == True %}
+                    <div class="content right">
+                        {% for small_req in big_req.fulfilled_by %}
+                            {% if small_req.is_empty == False %}
+                                <button class="collapsible choice">CHOICE: {{small_req.name}}</button>
+                            {% elif small_req.is_empty == True %}
+                                <button class="collapsible empty choice">CHOICE: {{small_req.name}}</button>
+                            {% endif %}
+                            
+                            {% if small_req.is_sub_req == True %}
+                                <div class="content">
+                                {% for req in small_req.fulfilled_by %}
+                                    {% if req.is_empty == False %}                        
+                                        <button id="big_req{{loop.index}}" class="collapsible subreq">SUB REQUIREMENT: {{req.name}}</button>
+                                    {% elif req.is_empty == True %}
+                                        <button id="big_req{{loop.index}}" class="collapsible empty subreq">SUB REQUIREMENT: {{req.name}}</button>
+                                    {% endif %}
+
+                                    <div class="content">
+                                    {% for dept in req.classes %}
+                                        {% for course in req.classes[dept] %}
+                                            <button class="collapsible course">{{dept}} {{course.num}}: {{course.title}}</button>
+                                            <!-- Display the classes -->
+                                            <table class='course'>
+                                                <tr>
+                                                    <th>Code</th>
+                                                    <th>Type</th>
+                                                    <th>Professor</th>
+                                                    <th>Time</th>
+                                                    <th>Location</th>
+                                                    <th>Max</th>
+                                                    <th>Enrolled</th>
+                                                    <th>Waitlist</th>
+                                                    <th>Restrictions</th>
+                                                    <th>Status</th>
+                                                    <th>Prerequisites</th>
+                                                </tr>
+                                                {% for offering in course.offerings %}
+                                                    <tr>
+                                                        {% for attr in offering.values() %}
+                                                            <td> {{attr}} </td>
+                                                        {% endfor %}
+                                                        <td>{{course.prereqs}}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </table>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+
+                                {% endfor %}                  
+                                </div>
+                            
+                            {% elif small_req.is_sub_req == False %}
+                                <!-- display class name buttons within the subreq -->
+                                <div class="content">
+                                    {% for dept in small_req.classes %}
+                                        {% for course in small_req.classes[dept] %}
+                                            <button class="collapsible course">{{dept}} {{course.num}}: {{course.title}}</button>
+                                            <!-- Display the classes -->
+                                            <table class='course'>
+                                                <tr>
+                                                    <th>Code</th>
+                                                    <th>Type</th>
+                                                    <th>Professor</th>
+                                                    <th>Time</th>
+                                                    <th>Location</th>
+                                                    <th>Max</th>
+                                                    <th>Enrolled</th>
+                                                    <th>Waitlist</th>
+                                                    <th>Restrictions</th>
+                                                    <th>Status</th>
+                                                    <th>Prerequisites</th>
+                                                </tr>
+                                                {% for offering in course.offerings %}
+                                                    <tr>
+                                                        {% for attr in offering.values() %}
+                                                            <td> {{attr}} </td>
+                                                        {% endfor %}
+                                                        <td>{{course.prereqs}}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </table>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+
+                            {% endif %}
+
+                        {% endfor %}  
+                    </div>
+                        
+                    <!-- If its just a regular requirement then show the classes in it -->
+                    {% elif big_req.is_master_req == False %}
+                    <div class="content right">
+                        {% for dept in big_req.classes %}
+                            {% for course in big_req.classes[dept] %}
+                                <button id="{{loop.index}}" class="collapsible">{{dept}} {{course.num}}: {{course.title}}</button>
+                                <!-- Display the classes -->
+                                <table class='course'>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Type</th>
+                                        <th>Professor</th>
+                                        <th>Time</th>
+                                        <th>Location</th>
+                                        <th>Max</th>
+                                        <th>Enrolled</th>
+                                        <th>Waitlist</th>
+                                        <th>Restrictions</th>
+                                        <th>Status</th>
+                                        <th>Prerequisites</th>
+                                    </tr>
+                                    {% for offering in course.offerings %}
+                                        <tr>
+                                            {% for attr in offering.values() %}
+                                                <td> {{attr}} </td>
+                                            {% endfor %}
+                                            <td>{{course.prereqs}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+
+                    </div> 
                 {% elif big_req.is_empty == True %}
-                    <button class="collapsible empty big_req">{{big_req.name}} </button>
+                    <div class="big_req left">
+                        <button class="collapsible empty big_req" id="{{loop.index}}">{{big_req.name}} </button>
+                    </div>
+                    
                 {% endif %}
             </div>
 
-            <div class="content">
-                <p>hello</p>
-            </div>
 
 
+            
+           
 
-
-
-
-
-
-
-
-
-
-
-
-            {#
-            <!-- If big_req is a master req then show the subreq name buttons -->
-            {% if big_req.is_master_req == True %}
-            <div class="content">
-                {% for small_req in big_req.fulfilled_by %}
-                    {% if small_req.is_empty == False %}
-                        <button class="collapsible choice">CHOICE: {{small_req.name}}</button>
-                    {% elif small_req.is_empty == True %}
-                        <button class="collapsible empty choice">CHOICE: {{small_req.name}}</button>
-                    {% endif %}
-                    
-                    {% if small_req.is_sub_req == True %}
-                        <div class="content">
-                        {% for req in small_req.fulfilled_by %}
-                            {% if req.is_empty == False %}                        
-                                <button id="big_req{{loop.index}}" class="collapsible subreq">SUB REQUIREMENT: {{req.name}}</button>
-                            {% elif req.is_empty == True %}
-                                <button id="big_req{{loop.index}}" class="collapsible empty subreq">SUB REQUIREMENT: {{req.name}}</button>
-                            {% endif %}
-
-                            <div class="content">
-                            {% for dept in req.classes %}
-                                {% for course in req.classes[dept] %}
-                                    <button class="collapsible course">{{dept}} {{course.num}}: {{course.title}}</button>
-                                    <!-- Display the classes -->
-                                    <table class='course'>
-                                        <tr>
-                                            <th>Code</th>
-                                            <th>Type</th>
-                                            <th>Professor</th>
-                                            <th>Time</th>
-                                            <th>Location</th>
-                                            <th>Max</th>
-                                            <th>Enrolled</th>
-                                            <th>Waitlist</th>
-                                            <th>Restrictions</th>
-                                            <th>Status</th>
-                                            <th>Prerequisites</th>
-                                        </tr>
-                                        {% for offering in course.offerings %}
-                                            <tr>
-                                                {% for attr in offering.values() %}
-                                                    <td> {{attr}} </td>
-                                                {% endfor %}
-                                                <td>{{course.prereqs}}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </table>
-                                {% endfor %}
-                            {% endfor %}
-                        </div>
-
-                        {% endfor %}                  
-                        </div>
-                    
-                    {% elif small_req.is_sub_req == False %}
-                        <!-- display class name buttons within the subreq -->
-                        <div class="content">
-                            {% for dept in small_req.classes %}
-                                {% for course in small_req.classes[dept] %}
-                                    <button class="collapsible course">{{dept}} {{course.num}}: {{course.title}}</button>
-                                    <!-- Display the classes -->
-                                    <table class='course'>
-                                        <tr>
-                                            <th>Code</th>
-                                            <th>Type</th>
-                                            <th>Professor</th>
-                                            <th>Time</th>
-                                            <th>Location</th>
-                                            <th>Max</th>
-                                            <th>Enrolled</th>
-                                            <th>Waitlist</th>
-                                            <th>Restrictions</th>
-                                            <th>Status</th>
-                                            <th>Prerequisites</th>
-                                        </tr>
-                                        {% for offering in course.offerings %}
-                                            <tr>
-                                                {% for attr in offering.values() %}
-                                                    <td> {{attr}} </td>
-                                                {% endfor %}
-                                                <td>{{course.prereqs}}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </table>
-                                {% endfor %}
-                            {% endfor %}
-                        </div>
-
-                    {% endif %}
-
-                {% endfor %}  
-            </div>
-                
-            <!-- If its just a regular requirement then show the classes in it -->
-            {% elif big_req.is_master_req == False %}
-            <div class="content">
-                {% for dept in big_req.classes %}
-                    {% for course in big_req.classes[dept] %}
-                        <button id="big_req{{loop.index}}" class="collapsible">{{dept}} {{course.num}}: {{course.title}}</button>
-                        <!-- Display the classes -->
-                        <table class='course'>
-                            <tr>
-                                <th>Code</th>
-                                <th>Type</th>
-                                <th>Professor</th>
-                                <th>Time</th>
-                                <th>Location</th>
-                                <th>Max</th>
-                                <th>Enrolled</th>
-                                <th>Waitlist</th>
-                                <th>Restrictions</th>
-                                <th>Status</th>
-                                <th>Prerequisites</th>
-                            </tr>
-                            {% for offering in course.offerings %}
-                                <tr>
-                                    {% for attr in offering.values() %}
-                                        <td> {{attr}} </td>
-                                    {% endfor %}
-                                    <td>{{course.prereqs}}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    {% endfor %}
-                {% endfor %}
-            {% endif %}
-            </div> 
-
-        {% endfor %}      #}
+        {% endfor %}      
     </body>
 
     <script>
-    var coll = document.getElementsByClassName("collapsible");
-    var sub = document.getElementsByClassName("subreq");
+
+    function loadContents() {
+        document.getElementById("test").innerHTML = '{{hi()}}';
+    }
+
+    var big_reqs = document.getElementsByClassName("big_req");
     var i;
 
-    for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
+    for (i = 0; i < big_reqs.length; i++) {
+    big_reqs[i].addEventListener("click", function() {
         this.classList.toggle("active");
-        var content = this.nextElementSibling;
+        var content = this.nextElementSibling;    
         if (content.style.display === "block") {
         content.style.display = "none";
         } else {
         content.style.display = "block";
         } 
+        
     });
     }
 
-    function show(nr) {
-        var big_reqs = document.querySelectorAll('[id^="big_req-"]').id 
-        for (id in big_reqs) {
-            document.getElementById(id).style.display="none";
-        }
-        document.getElementById(""+nr).style.display="block";
-    }
     </script>
 </html>
  
