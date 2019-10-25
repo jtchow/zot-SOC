@@ -38,17 +38,17 @@
         color:rgb(230, 66, 66);
     }
 
-    .choice {
+    /* .choice {
         margin-left:2%;
-    }
+    } */
 
-    .subreq {
+    /* .subreq {
         margin-left:4%;
-    }
+    } */
 
-    .course {
+    /* .course {
         margin-left:4%;
-    }
+    } */
 
     table {
         margin-left:4%;
@@ -64,7 +64,6 @@
     }
 
     .content {
-        margin-left: 12px;
         overflow: hidden;
         background-color: #f1f1f1;
         display: none;
@@ -77,7 +76,6 @@
         font-size: 10px;
         color: black;
         float: right;
-        margin-left: 5px;
     }
 
     .active:after {
@@ -103,11 +101,11 @@
         clear: both;
     }
 
-    table {
+    /* table {
         border-collapse: collapse;
         width: 100%;
         display: none;
-    }
+    } */
 
     td, th {
         border: 1.5px solid #dddddd;
@@ -122,6 +120,7 @@
     .left {
         width: 50%;
         display: inline-block;
+
     }
 
     /* .big_req {
@@ -312,10 +311,10 @@
     big_reqs[i].addEventListener("click", function() {
         this.classList.toggle("active");
         var content = this.nextElementSibling;    
-        if (content.style.display === "block") {
+        if (content.style.display === "inline-block") {
         content.style.display = "none";
         } else {
-        content.style.display = "block";
+        content.style.display = "inline-block";
         } 
         
     });
