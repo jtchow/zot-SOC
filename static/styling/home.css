@@ -1,0 +1,138 @@
+/*   -------------------------------------------  general styles  ----------------------------------------------- */
+* {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        font-size: 100%;
+        vertical-align: baseline;
+        background: transparent;
+    }
+
+body {
+    font-family: 'Lato Light', sans-serif;
+}
+
+/*   -------------------------------------------  header styles  ----------------------------------------------- */
+header {
+    height: 4em;
+    width: 100%;
+    border: 3px thin;
+    background-color: rgb(190, 255, 255);
+    overflow: hidden;
+}
+
+
+#logoimg {
+    width: 40px;
+    height: 40px;
+    float: left;
+    padding-left: 18px;
+    padding-top: 12px;
+    padding-right: 10px;
+}
+
+
+h1 {   
+    font-size: 50px;
+    float: left;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    font-family: 'Lato Hairline', sans-serif;
+}
+
+header > div.header-right > nav {
+    float: right;
+    width: -webkit-max-content;
+    width: -moz-max-content; 
+    padding-right: 1.5%;
+}
+
+
+a {
+    display: block;
+    float: left;
+    font-size: 30px;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    color:black;
+}
+
+
+.header-right {
+    float: left;
+    width: 67%;
+    height: 100%;
+}
+
+
+.header-left {
+    float: left;
+    width: 33%;
+    height: 100%;
+}
+
+a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/*   -------------------------------------------  Welcome styles  ----------------------------------------------- */
+
+div.welcome > p#welcome {
+    font-size: 100px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+
+/*   -------------------------------------------  Instruction styles  ----------------------------------------------- */
+
+div.instructions {
+    width: 50%;   
+    padding-top: 2%;
+    height: 550px;
+    float: left;
+}
+
+div.instructions > ol {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    border-style: solid;
+    border-width: 3px;    
+    list-style-position:inside; 
+    padding: 14px;
+}
+
+div.instructions > ol > li {
+    font-size: 50px;
+    margin-bottom: 12px;
+}
+
+/*   -------------------------------------------  Submission styles  ----------------------------------------------- */
+
+div.submission {
+    width: 50%;
+    float: left;
+    height: 550px;
+    padding-top: 2%;
+}
+
+div.submission > form > textarea {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    border-style: solid;
+    border-width: 3px;    
+}
+
+div.submission > form > input {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+

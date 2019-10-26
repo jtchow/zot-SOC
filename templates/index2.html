@@ -130,9 +130,9 @@
         {% for big_req in courses %}
         <!-- Display all big_requirement buttons -->
             {% if big_req.is_empty == False %}
-                <button class="collapsible">BIG REQUIREMENT: {{big_req.name}}</button>
+                <button class="collapsible">{{big_req.name}}</button>
             {% elif big_req.is_empty == True %}
-                <button class="collapsible empty">BIG REQUIREMENT: {{big_req.name}} </button>
+                <button class="collapsible empty">{{big_req.name}} </button>
             {% endif %}
             
             <!-- If big_req is a master req then show the subreq name buttons -->
@@ -168,17 +168,15 @@
                                             <th>Location</th>
                                             <th>Max</th>
                                             <th>Enrolled</th>
-                                            <th>Waitlist</th>
-                                            <th>Restrictions</th>
+                                            <th>WL</th>
+                                            <th>Rstr</th>
                                             <th>Status</th>
-                                            <th>Prerequisites</th>
                                         </tr>
                                         {% for offering in course.offerings %}
                                             <tr>
                                                 {% for attr in offering.values() %}
                                                     <td> {{attr}} </td>
                                                 {% endfor %}
-                                                <td>{{course.prereqs}}</td>
                                             </tr>
                                         {% endfor %}
                                     </table>
@@ -205,17 +203,15 @@
                                             <th>Location</th>
                                             <th>Max</th>
                                             <th>Enrolled</th>
-                                            <th>Waitlist</th>
-                                            <th>Restrictions</th>
+                                            <th>WL</th>
+                                            <th>Rstr</th>
                                             <th>Status</th>
-                                            <th>Prerequisites</th>
                                         </tr>
                                         {% for offering in course.offerings %}
                                             <tr>
                                                 {% for attr in offering.values() %}
                                                     <td> {{attr}} </td>
                                                 {% endfor %}
-                                                <td>{{course.prereqs}}</td>
                                             </tr>
                                         {% endfor %}
                                     </table>
@@ -244,17 +240,15 @@
                                 <th>Location</th>
                                 <th>Max</th>
                                 <th>Enrolled</th>
-                                <th>Waitlist</th>
-                                <th>Restrictions</th>
+                                <th>WL</th>
+                                <th>Rstr</th>
                                 <th>Status</th>
-                                <th>Prerequisites</th>
                             </tr>
                             {% for offering in course.offerings %}
                                 <tr>
                                     {% for attr in offering.values() %}
                                         <td> {{attr}} </td>
                                     {% endfor %}
-                                    <td>{{course.prereqs}}</td>
                                 </tr>
                             {% endfor %}
                         </table>
