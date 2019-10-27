@@ -34,11 +34,13 @@ header {
 }
 
 
-h1 {   
+header > div.header-left > a {   
     font-size: 48px;
     float: left;
     padding: .2vh .2vh .2vh .4vh;
-    font-family: 'Lato Hairline', sans-serif;
+    font-family: 'Lato Light', sans-serif;
+    color: black;
+    text-decoration: none;
 }
 
 header > div.header-right > nav {
@@ -73,7 +75,7 @@ header > div.header-right > nav > a {
     height: 100%;
 }
 
-a:hover {
+nav > a:hover {
   background-color: #ddd;
   color: black;
 }
