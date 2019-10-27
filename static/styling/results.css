@@ -1,0 +1,52 @@
+/* Author: Jason Chow */
+
+/*   -------------------------------------------  Header styles  ----------------------------------------------- */
+
+header#output {
+    width: 84%;
+    float: left;
+}
+
+/*   -------------------------------------------  Saved styles  ----------------------------------------------- */
+div.saved {
+    width: 16%;
+    height: 100%;
+    float: right;
+    background-color: gold;
+}
+
+/*   -------------------------------------------  Results styles  ----------------------------------------------- */
+div.results {
+    width: 84%;
+    float: left;
+    padding-top: 3%;
+}
+
+/*   -------------------------------------------  Big Requirement List styles  ----------------------------------------------- */
+
+div.big_requirement_list {
+    width: 25%;
+    float: left;  
+    
+}
+
+div.big_requirement_list > p {
+    margin-left: auto;
+    margin-right: auto; 
+    width: 75%;
+    background-color: blanchedalmond;   
+}
+
+/*   -------------------------------------------  Big Requirement Content styles  ----------------------------------------------- */
+
+div.big_requirement_contents {
+    width: 70%;
+    float: left;    
+}
+
+div.big_requirement_contents > p {
+    margin-left: 0;
+    margin-right: auto; 
+    width: 100%;
+    background-color: aquamarine;
+}
