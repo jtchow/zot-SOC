@@ -24,6 +24,7 @@
 
     <div class="welcome">
         <p id="welcome"> Welcome. </p>
+        <p id="sub-welcome"> Follow the instructions below to start planning your schedule. </p>
     </div>
 
 
@@ -38,7 +39,7 @@
 
     <div class="submission">
         <form action="{{ url_for('index') }}" method="post">
-            <textarea name="degreeworks" rows="39" cols="90"></textarea>
+            <textarea name="degreeworks" rows="30" cols="90"></textarea>
             <br>
             <input type="submit">
         </form>       
