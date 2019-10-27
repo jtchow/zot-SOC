@@ -13,8 +13,8 @@ from flask_bootstrap import Bootstrap
 
 
 app = Flask(__name__)   #initialize flask app 
-bootstrap = Bootstrap(app)              #dont think i need this lol
-app.config['SECRET_KEY'] = 'hard to guess string'               #or this
+bootstrap = Bootstrap(app)              
+app.config['SECRET_KEY'] = 'hard to guess string'             
    
 
 
