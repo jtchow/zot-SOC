@@ -29,7 +29,7 @@
 
     <div class="instructions">
         <ol>
-            <li> Log in to your Degreeworks.</li>
+            <li> Log in to your <a href="https://login.uci.edu/ucinetid/webauth">Degreeworks</a>.</li>
             <li> Use CTRL+A and CTRL+C to copy all information from your Degreeworks.</li>
             <li> Paste information into the box on the right.</li>
             <li> Hit the "Submit" button.</li>
@@ -37,12 +37,11 @@
     </div>
 
     <div class="submission">
-        <form>
-            <textarea name="comment" rows="39" cols="60">Enter text here...</textarea>
+        <form action="{{ url_for('index') }}" method="post">
+            <textarea name="degreeworks" rows="39" cols="90"></textarea>
+            <br>
             <input type="submit">
-        </form>
-        
-
+        </form>       
     </div>
 
 

@@ -15,29 +15,25 @@ body {
 
 /*   -------------------------------------------  header styles  ----------------------------------------------- */
 header {
-    height: 4em;
+    height: 4%;
     width: 100%;
-    border: 3px thin;
-    background-color: rgb(190, 255, 255);
+    background-color: rgb(203, 255, 255);
     overflow: hidden;
 }
 
 
 #logoimg {
-    width: 40px;
-    height: 40px;
+    width: 2.2vmax;
+    height: 2.2vmax;
     float: left;
-    padding-left: 18px;
-    padding-top: 12px;
-    padding-right: 10px;
+    padding: 13px;
 }
 
 
 h1 {   
-    font-size: 50px;
+    font-size: 48px;
     float: left;
-    padding-bottom: 7px;
-    padding-left: 10px;
+    padding: .2vh .2vh .2vh .4vh;
     font-family: 'Lato Hairline', sans-serif;
 }
 
@@ -45,11 +41,11 @@ header > div.header-right > nav {
     float: right;
     width: -webkit-max-content;
     width: -moz-max-content; 
-    padding-right: 1.5%;
+    padding-right: 1vw;
 }
 
 
-a {
+header > div.header-right > nav > a {
     display: block;
     float: left;
     font-size: 30px;
@@ -97,18 +93,16 @@ div.instructions {
 }
 
 div.instructions > ol {
-    width: 80%;
+    width: 70%;
     margin-left: auto;
     margin-right: auto;
     height: 100%;
-    border-style: solid;
-    border-width: 3px;    
     list-style-position:inside; 
     padding: 14px;
 }
 
 div.instructions > ol > li {
-    font-size: 50px;
+    font-size: 30px;
     margin-bottom: 12px;
 }
 
@@ -121,18 +115,34 @@ div.submission {
     padding-top: 2%;
 }
 
-div.submission > form > textarea {
+div.submission > form {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
-    height: 100%;
-    border-style: solid;
-    border-width: 3px;    
+    height: 100%;   
 }
 
 div.submission > form > input {
     display: block;
     margin-right: auto;
     margin-left: auto;
+    padding:5px 15px; 
+    background:#ccc; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
 }
+
+
+div.submission > form > textarea {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+}
+    
 
