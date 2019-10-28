@@ -96,13 +96,12 @@ def create_master_requirement(all_courses, lines, i):
 
 def add_to_bigger_requirement(all_courses, i, lines, offered, choose_number):
     """Add sub requirement to its respective overall requirement."""
-    still_needed = clean_line(lines[i]).split('in')
-    still_needed_text = '  ---  Still needed: ' + still_needed[0]
+    still_needed = clean_line(lines[i]).split()
+    still_needed_num = still_needed[2]
     for x in range(15):                                                                     #arbitrary range                           
         if 'yet' in lines[i-x]:                                                             #"yet" marker denotes the name of a requirement. Example: "Not yet complete: Econ 20"
-            name = clean_line(lines[i-x])
-            name += still_needed_text                        
-            req = Requirement(name, offered)  
+            name = clean_line(lines[i-x])                      
+            req = Requirement(name, still_needed_num, offered)  
             if choose_number > 0:        
                 all_courses[-1].fulfilled_by[-1].fulfilled_by.append(req)
                 break
@@ -118,22 +117,20 @@ def add_single_requirement(all_courses, line, i, lines):
     else:
         offered = add_single_class(line)  
         
-    still_needed = lines[i].split('in')
-    still_needed_text = '  ---  ' + still_needed[0]
+    still_needed = lines[i].split()
+    still_needed_num = still_needed[2]
     #if you've already completed a class towards the requirement
     if lines[i-1].split()[0] in departments:
         for x in range(15):
             if 'yet' in lines[i-x]:
                 requirement_name = clean_line(lines[i-x])
-                requirement_name += still_needed_text
                 break  
     #if you haven't
     else:
-        requirement_name = clean_line(lines[i-1]) 
-        requirement_name += still_needed_text
+        requirement_name = clean_line(lines[i-1])         
       
 
-    requirement = SingleRequirement(requirement_name,offered)
+    requirement = SingleRequirement(requirement_name, still_needed_num, offered)
     all_courses.append(requirement)
     
 def get_choose_number(line):

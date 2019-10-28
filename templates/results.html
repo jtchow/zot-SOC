@@ -5,9 +5,132 @@
     <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link href="/static/styling/home.css" rel="stylesheet" />
     <link href="/static/styling/results.css" rel="stylesheet" />
+    <script src="/static/scripts/output.js" type="text/javascript"></script>
     <link rel="icon" href="/static/placeholder.jpg" type="image/icon type">
 </head>
 
+{% macro output_contents(big_req) -%}
+    {% if big_req.is_master_req == True %}
+        <div>
+            {% for small_req in big_req.fulfilled_by %}
+                {% if small_req.is_empty == False %}
+                    <button class="collapsible choice">CHOICE: {{small_req.name}}</button>
+                {% elif small_req.is_empty == True %}
+                    <button class="collapsible empty choice">CHOICE: {{small_req.name}}</button>
+                {% endif %}
+                
+                {% if small_req.is_sub_req == True %}
+                    <div class="content">
+                    {% for req in small_req.fulfilled_by %}
+                        {% if req.is_empty == False %}                        
+                            <button class="collapsible subreq">SUB REQUIREMENT: {{req.name}}</button>
+                        {% elif req.is_empty == True %}
+                            <button class="collapsible empty subreq">SUB REQUIREMENT: {{req.name}}</button>
+                        {% endif %}
+
+                        <div class="content">
+                        {% for dept in req.classes %}
+                            {% for course in req.classes[dept] %}
+                                <button class="collapsible course">{{dept}} {{course.num}}: {{course.title}}</button>
+                                <!-- Display the classes -->
+                                <table class='course'>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Type</th>
+                                        <th>Professor</th>
+                                        <th>Time</th>
+                                        <th>Location</th>
+                                        <th>Max</th>
+                                        <th>Enrolled</th>
+                                        <th>WL</th>
+                                        <th>Rstr</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    {% for offering in course.offerings %}
+                                        <tr>
+                                            {% for attr in offering.values() %}
+                                                <td> {{attr}} </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% endfor %}
+                        {% endfor %}
+                        </div>
+
+                    {% endfor %}                  
+                    </div>
+                
+                {% elif small_req.is_sub_req == False %}
+                    <!-- display class name buttons within the subreq -->
+                    <div class="content">
+                        {% for dept in small_req.classes %}
+                            {% for course in small_req.classes[dept] %}
+                                <button class="collapsible course">{{dept}} {{course.num}}: {{course.title}}</button>
+                                <!-- Display the classes -->
+                                <table class='course'>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Type</th>
+                                        <th>Professor</th>
+                                        <th>Time</th>
+                                        <th>Location</th>
+                                        <th>Max</th>
+                                        <th>Enrolled</th>
+                                        <th>WL</th>
+                                        <th>Rstr</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    {% for offering in course.offerings %}
+                                        <tr>
+                                            {% for attr in offering.values() %}
+                                                <td> {{attr}} </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}  
+        </div>
+            
+        <!-- If its just a regular requirement then show the classes in it -->
+        {% elif big_req.is_master_req == False %}
+            <div class="content">
+                {% for dept in big_req.classes %}
+                    {% for course in big_req.classes[dept] %}
+                        <button class="collapsible">{{dept}} {{course.num}}: {{course.title}}</button>
+                        <!-- Display the classes -->
+                        <table class='course'>
+                            <tr>
+                                <th>Code</th>
+                                <th>Type</th>
+                                <th>Professor</th>
+                                <th>Time</th>
+                                <th>Location</th>
+                                <th>Max</th>
+                                <th>Enrolled</th>
+                                <th>WL</th>
+                                <th>Rstr</th>
+                                <th>Status</th>
+                            </tr>
+                            {% for offering in course.offerings %}
+                                <tr>
+                                    {% for attr in offering.values() %}
+                                        <td> {{attr}} </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+            </div>
+{%- endmacro %}
 <body>
     <header id="output">
         <div class="header-left">
@@ -32,18 +155,39 @@
     </div>
 
     <div class="results">
-        <div class="big_requirement_list">
-            <p>helloskdlfjlkdsjkfjlksdjflksjdlkflkvlkxcjvlklkxcnl
-                knlkxcnlkvxljslkdjkllknewlkfnlkenfne
-                lksdjlkfjlkdsjflkdsjlkfjslkdjflkjdslkfjlk
-                dsjflkdsjlkfjsdlkjflkdsjflksdjflkjsd
-
-                sdfjkdsjfkljsdklfjlkdsjflkjsdfsd
-            </p>
+        <div class="big-requirement-area">
+            <div class="big-requirement-list">
+                {% for big_requirement in courses %}
+                    {% if big_requirement.is_empty == False %}
+                        <button id="button-{{loop.index}}" class="big_requirement" onclick="showContents(this.id)"> {{big_requirement.name}}</button>
+                    {% endif %}
+                {% endfor %}                
+            </div>
+           
         </div>
 
-        <div class="big_requirement_contents">
+        <div id="big-requirement-contents">
             <p>hello</p>
-        </div>        
+        </div>  
+
+        {% for big_requirement in courses %}
+            <div class="output" id="{{loop.index}}">
+                {{output_contents(big_requirement)}}
+            </div>             
+        {% endfor %}
+    
     </div>
 </body>
+
+<script>
+    function showContents(id) {
+        var contents = document.getElementById("big-requirement-contents");
+        var id_num = String(id).charAt(7);
+        var selected = document.getElementById(id_num);
+        contents.innerHTML = selected.innerHTML;
+        // var selected = document.getElementById(id);
+        // selected.style.display = "block";
+        // big_requirement_contents.innerHTML = "<p>hi</p>";
+    }
+</script>
+</html>

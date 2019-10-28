@@ -22,31 +22,44 @@ div.results {
     padding-top: 3%;
 }
 
-/*   -------------------------------------------  Big Requirement List styles  ----------------------------------------------- */
+/*   -------------------------------------------  Big Requirement styles  ----------------------------------------------- */
 
-div.big_requirement_list {
+div.big-requirement-area {
     width: 25%;
-    float: left;  
-    
+    float: left;      
 }
 
-div.big_requirement_list > p {
+div.big-requirement-list {
     margin-left: auto;
     margin-right: auto; 
     width: 75%;
-    background-color: blanchedalmond;   
+    background-color: blanchedalmond;
+    }
+
+div.big-requirement-list > button {
+    display: block;
+    border: .8px solid;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
 }
 
 /*   -------------------------------------------  Big Requirement Content styles  ----------------------------------------------- */
 
-div.big_requirement_contents {
+div#big-requirement-contents {
     width: 70%;
     float: left;    
 }
 
-div.big_requirement_contents > p {
+div#big-requirement-contents > p {
     margin-left: 0;
     margin-right: auto; 
     width: 100%;
     background-color: aquamarine;
+}
+
+/*   -------------------------------------------  Output Holder styles  ----------------------------------------------- */
+div.output {
+    display: none;
+    overflow: hidden;
 }

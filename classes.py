@@ -3,8 +3,9 @@ class Requirement:
     '''Requirement to fulfill part of the degree \n
     classes structure: { DEPT: [ Course1, Course2 ] }
     '''
-    def __init__(self, name, classes):
+    def __init__(self, name, still_needed_num, classes):
         self.name = name
+        self.still_needed_num = still_needed_num
         self.classes = classes
         self.is_master_req = False
         self.is_sub_req = False
@@ -19,6 +20,7 @@ class MasterRequirement:
     def __init__(self, name):
         self.name = name
         self.fulfilled_by = []  
+        self.still_needed_num = None
         self.is_master_req = True
         self.is_empty = True
 
