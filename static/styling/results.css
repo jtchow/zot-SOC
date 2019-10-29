@@ -13,10 +13,6 @@ button{
     border-radius: 5px; 
 }
 
-button.active {
-    background-color: #C8DDB0;
-}
-
 
 /*   -------------------------------------------  Header styles  ----------------------------------------------- */
 
@@ -79,6 +75,10 @@ div.big-requirement-list > button.big-requirement {
 button.big-requirement:hover {
     background-color: #C8DDB0;
 }
+
+div.big-requirement-list > button.active {
+    background-color: #C8DDB0;
+}
 /*   -------------------------------------------  Big Requirement Content styles  ----------------------------------------------- */
 
 div#big-requirement-contents {
@@ -106,15 +106,20 @@ div#big-requirement-contents > div {
 button.choice {
     display: block;
     width: 100%;
+    /* background-color: rgb(160, 203, 236); */
+}
+
+button.choice.active, button.choice:hover {
     background-color: rgb(160, 203, 236);
 }
+
 
 button.subreq {
     width: 96%;
     float: right;
     background-color: rgb(199, 217, 236);
-    /* background-color: rgb(224, 224, 224); */
 }
+
 
 button.course {
     width: 96%;

@@ -38,10 +38,6 @@ class Course:
         num = '20A'\n
         title = microeconomics,\n
         offerings = list of offering objects (the lectures and discussions)'''
-    # def __init__(self, num: str, title, offerings):       
-    #     self.num = num
-    #     self.title = title
-    #     self.offerings = offerings
 
     def __init__(self, iterable=(), **kwargs):
         self.__dict__.update(iterable, **kwargs)

@@ -153,19 +153,20 @@
         contents.innerHTML = selected.innerHTML;
     }
 
-    function makeActive(bigReqButton) {
-        var bigReqButtons = document.getElementsByClassName("big-requirement");
+    function makeActive(button) {
+        var bigReqButtons = document.getElementsByClassName(button.className);
         var i;
         for (i=0; i < bigReqButtons.length; i++) {
             if (bigReqButtons[i].classList.contains("active")) {
                 bigReqButtons[i].classList.toggle("active");
             }
         }
-        bigReqButton.classList.toggle("active");
+        button.classList.toggle("active");
     }
 
     function expand_or_collapse(button_clicked) {
         var content = button_clicked.nextElementSibling;
+        makeActive(button_clicked);
         if (content.style.display === "block") {
             content.style.display = "none";
 
