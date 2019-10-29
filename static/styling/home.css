@@ -17,7 +17,7 @@ body {
     overflow: hidden;
 }
 
-/*   -------------------------------------------  header styles  ----------------------------------------------- */
+/*   -------------------------------------------  general header styles  ----------------------------------------------- */
 header {
     height: 4%;
     width: 100%;
@@ -33,7 +33,7 @@ header {
     padding: 13px;
 }
 
-
+/*   -------------------------------------------  header left styles  ----------------------------------------------- */
 header > div.header-left > a {   
     font-size: 48px;
     float: left;
@@ -43,6 +43,13 @@ header > div.header-left > a {
     text-decoration: none;
 }
 
+.header-left {
+    float: left;
+    width: 33%;
+    height: 100%;
+}
+
+/*   -------------------------------------------  header right styles  ----------------------------------------------- */
 header > div.header-right > nav {
     float: right;
     width: -webkit-max-content;
@@ -65,13 +72,6 @@ header > div.header-right > nav > a {
 .header-right {
     float: left;
     width: 67%;
-    height: 100%;
-}
-
-
-.header-left {
-    float: left;
-    width: 33%;
     height: 100%;
 }
 
@@ -125,6 +125,12 @@ div.instructions > ol > li {
     margin-bottom: 12px;
 }
 
+div.instructions > ol > li > a {
+    text-decoration: none;
+    border-bottom: .8px solid;
+    color: rgb(92, 156, 230)
+}
+
 /*   -------------------------------------------  Submission styles  ----------------------------------------------- */
 
 div.submission {
@@ -146,7 +152,7 @@ div.submission > form > input {
     margin-right: auto;
     margin-left: auto;
     padding:5px 15px; 
-    background: rgb(236, 143, 143); 
+    background: #7CAFD6; 
     color: #F4F4EC;
     border:0 none;
     cursor:pointer;

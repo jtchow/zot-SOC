@@ -73,10 +73,12 @@ div.big-requirement-list > h1 {
 
 div.big-requirement-list > button.big-requirement {
     display: block;
-    /* background-color: #C8DDB0; */
     margin-bottom: 12px;
 }
 
+button.big-requirement:hover {
+    background-color: #C8DDB0;
+}
 /*   -------------------------------------------  Big Requirement Content styles  ----------------------------------------------- */
 
 div#big-requirement-contents {
