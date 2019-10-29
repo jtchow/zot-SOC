@@ -14,24 +14,20 @@
         <div>
             {% for small_req in big_req.fulfilled_by %}
                 {% if small_req.is_empty == False %}
-                    <button class="collapsible choice">CHOICE: {{small_req.name}}</button>
-                {% elif small_req.is_empty == True %}
-                    <button class="collapsible empty choice">CHOICE: {{small_req.name}}</button>
+                    <button class="collapsible choice" onclick="expand_or_collapse(this)">CHOICE: {{small_req.name}}</button>
                 {% endif %}
                 
                 {% if small_req.is_sub_req == True %}
                     <div class="content">
                     {% for req in small_req.fulfilled_by %}
                         {% if req.is_empty == False %}                        
-                            <button class="collapsible subreq">SUB REQUIREMENT: {{req.name}}</button>
-                        {% elif req.is_empty == True %}
-                            <button class="collapsible empty subreq">SUB REQUIREMENT: {{req.name}}</button>
+                            <button class="collapsible subreq" onclick="expand_or_collapse(this)">SUB REQUIREMENT: {{req.name}}</button>
                         {% endif %}
 
                         <div class="content">
                         {% for dept in req.classes %}
                             {% for course in req.classes[dept] %}
-                                <button class="collapsible course">{{dept}} {{course.num}}: {{course.title}}</button>
+                                <button class="collapsible course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
                                 <!-- Display the classes -->
                                 <table class='course'>
                                     <tr>
@@ -66,7 +62,7 @@
                     <div class="content">
                         {% for dept in small_req.classes %}
                             {% for course in small_req.classes[dept] %}
-                                <button class="collapsible course">{{dept}} {{course.num}}: {{course.title}}</button>
+                                <button class="collapsible course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
                                 <!-- Display the classes -->
                                 <table class='course'>
                                     <tr>
@@ -103,7 +99,7 @@
             <div class="content">
                 {% for dept in big_req.classes %}
                     {% for course in big_req.classes[dept] %}
-                        <button class="collapsible">{{dept}} {{course.num}}: {{course.title}}</button>
+                        <button class="collapsible" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
                         <!-- Display the classes -->
                         <table class='course'>
                             <tr>
@@ -140,23 +136,28 @@
     </header>
 
     <div class="saved">
-        <p>saved
-            saved <br>
-            ds<br>
-            ds<br>
-            ds<br>
-            ds<br>
-            ds<br><br>
-            ds<br><br>
-            ds<br>
-            ds
-
-        </p>
+        <div id="saved-heading">
+            <h1>Saved</h1>
+        </div>
+        
+        <div id="saved-classes">
+            <p><br>
+            <br>
+            <br>
+            <br>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            </p>
+        </div>
+        
     </div>
 
     <div class="results">
         <div class="big-requirement-area">
             <div class="big-requirement-list">
+                <h1>Available Big Requirements</h1>
                 {% for big_requirement in courses %}
                     {% if big_requirement.is_empty == False %}
                         <button id="button-{{loop.index}}" class="big_requirement" onclick="showContents(this.id)"> {{big_requirement.name}}</button>
@@ -167,7 +168,7 @@
         </div>
 
         <div id="big-requirement-contents">
-            <p>hello</p>
+            <p> Select a big requirement to see its contents. </p>
         </div>  
 
         {% for big_requirement in courses %}
@@ -182,12 +183,28 @@
 <script>
     function showContents(id) {
         var contents = document.getElementById("big-requirement-contents");
-        var id_num = String(id).charAt(7);
+        var split_id = id.split("-");
+        var id_num = split_id[1];
         var selected = document.getElementById(id_num);
         contents.innerHTML = selected.innerHTML;
-        // var selected = document.getElementById(id);
-        // selected.style.display = "block";
-        // big_requirement_contents.innerHTML = "<p>hi</p>";
+    }
+
+    function expand_or_collapse(button_clicked) {
+        var content = button_clicked.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+
+            var allChildren = content.children;
+            for (var i = 0; i < allChildren.length; i++) {
+                var contentChild = allChildren[i];
+                if (contentChild.className === "content") {
+                    contentChild.style.display = "none";
+                }                
+            }
+        } 
+        else {
+            content.style.display = "block";
+        } 
     }
 </script>
 </html>

@@ -1,5 +1,19 @@
 /* Author: Jason Chow */
 
+/*   -------------------------------------------  General styles  ----------------------------------------------- */
+
+button{
+    border: .6px solid;
+    width: 100%;
+    height: 45px;
+    text-align: left;
+    cursor: pointer;
+    padding: 13px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}
+
+
 /*   -------------------------------------------  Header styles  ----------------------------------------------- */
 
 header#output {
@@ -12,7 +26,18 @@ div.saved {
     width: 16%;
     height: 100%;
     float: right;
-    background-color: gold;
+    /* background-color: #CACCA3; */
+    outline: 1px solid;
+}
+
+div.saved > div#saved-heading {
+    background-color: antiquewhite;
+    height: 4%;
+}
+div.saved > div#saved-heading > h1 {
+    font-size: 27px;
+    text-align: center;
+    padding: 17px;   
 }
 
 /*   -------------------------------------------  Results styles  ----------------------------------------------- */
@@ -25,39 +50,74 @@ div.results {
 /*   -------------------------------------------  Big Requirement styles  ----------------------------------------------- */
 
 div.big-requirement-area {
-    width: 25%;
+    width: 30%;
     float: left;      
 }
 
 div.big-requirement-list {
     margin-left: auto;
     margin-right: auto; 
-    width: 75%;
-    background-color: blanchedalmond;
+    width: 80%;
     }
+
+div.big-requirement-list > h1 {
+    font-size: 27px;
+    text-align: center;
+    padding-bottom: 24px;
+}
 
 div.big-requirement-list > button {
     display: block;
-    border: .8px solid;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
+    background-color: #C8DDB0;
+    margin-bottom: 12px;
 }
 
 /*   -------------------------------------------  Big Requirement Content styles  ----------------------------------------------- */
 
 div#big-requirement-contents {
-    width: 70%;
+    width: 60%;
     float: left;    
+    margin-top: 6px;
+    outline: 1px solid;
+    margin-left: 50px;
+    height: 750px;
+    overflow: scroll;
 }
 
 div#big-requirement-contents > p {
-    margin-left: 0;
-    margin-right: auto; 
+    text-align: center;
+    padding-top: 30px;
     width: 100%;
-    background-color: aquamarine;
+    font-size: 30px;
 }
 
+button.choice {
+    display: block;
+    width: 100%;
+    background-color: rgb(160, 203, 236);
+}
+
+button.subreq {
+    width: 96%;
+    float: right;
+    background-color: rgb(180, 186, 192);
+    /* background-color: rgb(224, 224, 224); */
+}
+
+button.course {
+    width: 92%;
+    float: right;
+    background-color: rgb(224, 224, 224);
+}
+
+table.course {
+    width: 92%;
+    float: right;
+}
+
+div.content {
+    display: none;
+}
 /*   -------------------------------------------  Output Holder styles  ----------------------------------------------- */
 div.output {
     display: none;
