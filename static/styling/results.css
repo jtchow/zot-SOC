@@ -138,6 +138,12 @@ table.course {
     border-collapse: collapse;
 }
 
+table.subreq-course {
+    width: 92%;
+    float: right;
+    border-collapse: collapse;
+}
+
 table.first-level-course {
     width: 100%;
     float: right;
