@@ -10,47 +10,30 @@
 </head>
 
 {% macro output_contents(big_req) -%}
+    <!-- If it's a master requirement, show its contents -->
     {% if big_req.is_master_req == True %}
         <div>
+            <!-- Show every non-empty choice in the master requirement -->
             {% for small_req in big_req.fulfilled_by %}
                 {% if small_req.is_empty == False %}
-                    <button class="collapsible choice" onclick="expand_or_collapse(this)">CHOICE: {{small_req.name}}</button>
+                    <button class="collapsible choice" onclick="expand_or_collapse(this)">Choice {{loop.index}}: {{small_req.name}}</button>
                 {% endif %}
                 
+                <!-- If the choice has subrequirements show them -->
                 {% if small_req.is_sub_req == True %}
                     <div class="content">
                     {% for req in small_req.fulfilled_by %}
                         {% if req.is_empty == False %}                        
-                            <button class="collapsible subreq" onclick="expand_or_collapse(this)">SUB REQUIREMENT: {{req.name}}</button>
+                            <button class="collapsible subreq" onclick="expand_or_collapse(this)">{{req.name}}</button>
                         {% endif %}
-
+                        
+                        <!-- Display the classes -->
                         <div class="content">
                         {% for dept in req.classes %}
                             {% for course in req.classes[dept] %}
                                 <button class="collapsible subreq-course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
-                                <!-- Display the classes -->
                                 <div class="content">
-                                    <table class='subreq-course'>
-                                        <tr>
-                                            <th>Code</th>
-                                            <th>Type</th>
-                                            <th>Professor</th>
-                                            <th>Time</th>
-                                            <th>Location</th>
-                                            <th>Max</th>
-                                            <th>Enrolled</th>
-                                            <th>WL</th>
-                                            <th>Rstr</th>
-                                            <th>Status</th>
-                                        </tr>
-                                        {% for offering in course.offerings %}
-                                            <tr>
-                                                {% for attr in offering.values() %}
-                                                    <td> {{attr}} </td>
-                                                {% endfor %}
-                                            </tr>
-                                        {% endfor %}
-                                    </table>
+                                    {{showTable(course,'subreq-course')}}
                                 </div>
                             {% endfor %}
                         {% endfor %}
@@ -60,34 +43,13 @@
                     </div>
                 
                 {% elif small_req.is_sub_req == False %}
-                    <!-- display class name buttons within the subreq -->
+                    <!-- display classes within the choice -->
                     <div class="content">
                         {% for dept in small_req.classes %}
                             {% for course in small_req.classes[dept] %}
                                 <button class="collapsible course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
-                                <!-- Display the classes -->
                                 <div class="content">
-                                    <table class='course'>
-                                        <tr>
-                                            <th>Code</th>
-                                            <th>Type</th>
-                                            <th>Professor</th>
-                                            <th>Time</th>
-                                            <th>Location</th>
-                                            <th>Max</th>
-                                            <th>Enrolled</th>
-                                            <th>WL</th>
-                                            <th>Rstr</th>
-                                            <th>Status</th>
-                                        </tr>
-                                        {% for offering in course.offerings %}
-                                            <tr>
-                                                {% for attr in offering.values() %}
-                                                    <td> {{attr}} </td>
-                                                {% endfor %}
-                                            </tr>
-                                        {% endfor %}
-                                    </table>
+                                    {{showTable(course,'course')}}
                                 </div>
                             {% endfor %}
                         {% endfor %}
@@ -104,34 +66,37 @@
                 {% for dept in big_req.classes %}
                     {% for course in big_req.classes[dept] %}
                         <button class="first-level-course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
-                        <!-- Display the classes -->
                         <div class="content">
-                            <table class='first-level-course  '>
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Type</th>
-                                    <th>Professor</th>
-                                    <th>Time</th>
-                                    <th>Location</th>
-                                    <th>Max</th>
-                                    <th>Enrolled</th>
-                                    <th>WL</th>
-                                    <th>Rstr</th>
-                                    <th>Status</th>
-                                </tr>
-                                {% for offering in course.offerings %}
-                                    <tr>
-                                        {% for attr in offering.values() %}
-                                            <td> {{attr}} </td>
-                                        {% endfor %}
-                                    </tr>
-                                {% endfor %}
-                            </table>
+                            {{showTable(course,'first-level-course')}}
                         </div>
                     {% endfor %}
                 {% endfor %}
-            {% endif %}
             </div>
+        {% endif %}
+{%- endmacro %}
+
+{% macro showTable(course, className) -%}
+    <table class="{{className}}">
+        <tr>
+            <th>Code</th>
+            <th>Type</th>
+            <th>Professor</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>Max</th>
+            <th>Enrolled</th>
+            <th>WL</th>
+            <th>Rstr</th>
+            <th>Status</th>
+        </tr>
+        {% for offering in course.offerings %}
+            <tr>
+                {% for attr in offering.values() %}
+                    <td> {{attr}} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
 {%- endmacro %}
 
 <body>
