@@ -13,6 +13,10 @@ button{
     border-radius: 5px; 
 }
 
+button.active {
+    background-color: #C8DDB0;
+}
+
 
 /*   -------------------------------------------  Header styles  ----------------------------------------------- */
 
@@ -24,15 +28,16 @@ header#output {
 /*   -------------------------------------------  Saved styles  ----------------------------------------------- */
 div.saved {
     width: 16%;
-    height: 100%;
+    height: 1000px;
     float: right;
     /* background-color: #CACCA3; */
     outline: 1px solid;
+    overflow: hidden;
 }
 
 div.saved > div#saved-heading {
     background-color: antiquewhite;
-    height: 4%;
+    height: 6.5%;
 }
 div.saved > div#saved-heading > h1 {
     font-size: 27px;
@@ -66,9 +71,9 @@ div.big-requirement-list > h1 {
     padding-bottom: 24px;
 }
 
-div.big-requirement-list > button {
+div.big-requirement-list > button.big-requirement {
     display: block;
-    background-color: #C8DDB0;
+    /* background-color: #C8DDB0; */
     margin-bottom: 12px;
 }
 
@@ -77,8 +82,7 @@ div.big-requirement-list > button {
 div#big-requirement-contents {
     width: 60%;
     float: left;    
-    margin-top: 6px;
-    outline: 1px solid;
+    margin-top: 55px;
     margin-left: 50px;
     height: 750px;
     overflow: scroll;
@@ -91,6 +95,12 @@ div#big-requirement-contents > p {
     font-size: 30px;
 }
 
+div#big-requirement-contents > div {
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 button.choice {
     display: block;
     width: 100%;
@@ -100,19 +110,50 @@ button.choice {
 button.subreq {
     width: 96%;
     float: right;
-    background-color: rgb(180, 186, 192);
+    background-color: rgb(199, 217, 236);
     /* background-color: rgb(224, 224, 224); */
 }
 
 button.course {
+    width: 96%;
+    float: right;
+    background-color: rgb(224, 224, 224);
+}
+
+button.subreq-course {
     width: 92%;
     float: right;
     background-color: rgb(224, 224, 224);
 }
 
+button.first-level-course {
+    width: 100%;
+    float: left;
+    background-color: rgb(224, 224, 224);
+}
+
 table.course {
-    width: 92%;
+    width: 96%;
     float: right;
+    border-collapse: collapse;
+}
+
+table.first-level-course {
+    width: 100%;
+    float: right;
+    border-collapse: collapse;
+}
+
+table.course > tr,th {
+    border: 1.5px solid #c4c4c4;
+    text-align: center;
+    padding: 8px;
+}
+
+table.course > tr, td {
+    border: 1.5px solid #c4c4c4;
+    text-align: left;
+    padding: 8px;
 }
 
 div.content {

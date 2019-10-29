@@ -27,29 +27,31 @@
                         <div class="content">
                         {% for dept in req.classes %}
                             {% for course in req.classes[dept] %}
-                                <button class="collapsible course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
+                                <button class="collapsible subreq-course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
                                 <!-- Display the classes -->
-                                <table class='course'>
-                                    <tr>
-                                        <th>Code</th>
-                                        <th>Type</th>
-                                        <th>Professor</th>
-                                        <th>Time</th>
-                                        <th>Location</th>
-                                        <th>Max</th>
-                                        <th>Enrolled</th>
-                                        <th>WL</th>
-                                        <th>Rstr</th>
-                                        <th>Status</th>
-                                    </tr>
-                                    {% for offering in course.offerings %}
+                                <div class="content">
+                                    <table class='course'>
                                         <tr>
-                                            {% for attr in offering.values() %}
-                                                <td> {{attr}} </td>
-                                            {% endfor %}
+                                            <th>Code</th>
+                                            <th>Type</th>
+                                            <th>Professor</th>
+                                            <th>Time</th>
+                                            <th>Location</th>
+                                            <th>Max</th>
+                                            <th>Enrolled</th>
+                                            <th>WL</th>
+                                            <th>Rstr</th>
+                                            <th>Status</th>
                                         </tr>
-                                    {% endfor %}
-                                </table>
+                                        {% for offering in course.offerings %}
+                                            <tr>
+                                                {% for attr in offering.values() %}
+                                                    <td> {{attr}} </td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
                             {% endfor %}
                         {% endfor %}
                         </div>
@@ -64,27 +66,29 @@
                             {% for course in small_req.classes[dept] %}
                                 <button class="collapsible course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
                                 <!-- Display the classes -->
-                                <table class='course'>
-                                    <tr>
-                                        <th>Code</th>
-                                        <th>Type</th>
-                                        <th>Professor</th>
-                                        <th>Time</th>
-                                        <th>Location</th>
-                                        <th>Max</th>
-                                        <th>Enrolled</th>
-                                        <th>WL</th>
-                                        <th>Rstr</th>
-                                        <th>Status</th>
-                                    </tr>
-                                    {% for offering in course.offerings %}
+                                <div class="content">
+                                    <table class='course'>
                                         <tr>
-                                            {% for attr in offering.values() %}
-                                                <td> {{attr}} </td>
-                                            {% endfor %}
+                                            <th>Code</th>
+                                            <th>Type</th>
+                                            <th>Professor</th>
+                                            <th>Time</th>
+                                            <th>Location</th>
+                                            <th>Max</th>
+                                            <th>Enrolled</th>
+                                            <th>WL</th>
+                                            <th>Rstr</th>
+                                            <th>Status</th>
                                         </tr>
-                                    {% endfor %}
-                                </table>
+                                        {% for offering in course.offerings %}
+                                            <tr>
+                                                {% for attr in offering.values() %}
+                                                    <td> {{attr}} </td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
                             {% endfor %}
                         {% endfor %}
                     </div>
@@ -96,37 +100,40 @@
             
         <!-- If its just a regular requirement then show the classes in it -->
         {% elif big_req.is_master_req == False %}
-            <div class="content">
+            <div>
                 {% for dept in big_req.classes %}
                     {% for course in big_req.classes[dept] %}
-                        <button class="collapsible" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
+                        <button class="first-level-course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
                         <!-- Display the classes -->
-                        <table class='course'>
-                            <tr>
-                                <th>Code</th>
-                                <th>Type</th>
-                                <th>Professor</th>
-                                <th>Time</th>
-                                <th>Location</th>
-                                <th>Max</th>
-                                <th>Enrolled</th>
-                                <th>WL</th>
-                                <th>Rstr</th>
-                                <th>Status</th>
-                            </tr>
-                            {% for offering in course.offerings %}
+                        <div class="content">
+                            <table class='first-level-course  '>
                                 <tr>
-                                    {% for attr in offering.values() %}
-                                        <td> {{attr}} </td>
-                                    {% endfor %}
+                                    <th>Code</th>
+                                    <th>Type</th>
+                                    <th>Professor</th>
+                                    <th>Time</th>
+                                    <th>Location</th>
+                                    <th>Max</th>
+                                    <th>Enrolled</th>
+                                    <th>WL</th>
+                                    <th>Rstr</th>
+                                    <th>Status</th>
                                 </tr>
-                            {% endfor %}
-                        </table>
+                                {% for offering in course.offerings %}
+                                    <tr>
+                                        {% for attr in offering.values() %}
+                                            <td> {{attr}} </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
                     {% endfor %}
                 {% endfor %}
             {% endif %}
             </div>
 {%- endmacro %}
+
 <body>
     <header id="output">
         <div class="header-left">
@@ -141,15 +148,6 @@
         </div>
         
         <div id="saved-classes">
-            <p><br>
-            <br>
-            <br>
-            <br>
-            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            </p>
         </div>
         
     </div>
@@ -160,7 +158,7 @@
                 <h1>Available Big Requirements</h1>
                 {% for big_requirement in courses %}
                     {% if big_requirement.is_empty == False %}
-                        <button id="button-{{loop.index}}" class="big_requirement" onclick="showContents(this.id)"> {{big_requirement.name}}</button>
+                        <button id="button-{{loop.index}}" class="big-requirement" onclick="showContents(this)"> {{big_requirement.name}}</button>
                     {% endif %}
                 {% endfor %}                
             </div>
@@ -181,12 +179,24 @@
 </body>
 
 <script>
-    function showContents(id) {
+    function showContents(bigReqButton) {
+        makeActive(bigReqButton);
         var contents = document.getElementById("big-requirement-contents");
-        var split_id = id.split("-");
+        var split_id = bigReqButton.id.split("-");
         var id_num = split_id[1];
         var selected = document.getElementById(id_num);
         contents.innerHTML = selected.innerHTML;
+    }
+
+    function makeActive(bigReqButton) {
+        var bigReqButtons = document.getElementsByClassName("big-requirement");
+        var i;
+        for (i=0; i < bigReqButtons.length; i++) {
+            if (bigReqButtons[i].classList.contains("active")) {
+                bigReqButtons[i].classList.toggle("active");
+            }
+        }
+        bigReqButton.classList.toggle("active");
     }
 
     function expand_or_collapse(button_clicked) {
