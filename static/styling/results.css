@@ -55,6 +55,24 @@ div.saved > div#saved-classes > p {
     text-align: left;
 }
 
+div.saved > div#saved-classes > table {
+    width: 100%;
+    float: right;
+    border-collapse: collapse;
+}
+
+div.saved > div#saved-classes > table > tr,th {
+    border: 1.5px solid #c4c4c4;
+    text-align: center;
+    padding: 8px;
+}
+
+div.saved > div#saved-classes > table > tr, td {
+    border: 1.5px solid #c4c4c4;
+    text-align: left;
+    padding: 8px;
+}
+
 /*   -------------------------------------------  Results styles  ----------------------------------------------- */
 div.results {
     width: 75%;
@@ -188,9 +206,10 @@ div.content {
     display: none;
 }
 
-tr.active {
+tr:hover {
     background-color: antiquewhite;
 }
+
 /*   -------------------------------------------  Output Holder styles  ----------------------------------------------- */
 div.output {
     display: none;

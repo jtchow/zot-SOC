@@ -204,8 +204,7 @@
     }
 
     function appendSavedClass(row, courseTitle, saved) {
-        saved[courseTitle].push(row.children);
-        
+        saved[courseTitle].push(row.children);        
     }
 
     function removeSavedClass(row, courseTitle, saved) {
@@ -218,10 +217,8 @@
         row.classList.toggle("active");
         if (courseTitle in saved) {
             if (saved[courseTitle].includes(row.children)) {
-
                 removeSavedClass(row, courseTitle, saved);
             }
-
             else {
                 appendSavedClass(row, courseTitle, saved);
             }
@@ -236,6 +233,9 @@
     function clickRemoveClass(saved, element) {
         var id = element.id.split("-").join(" ").split("_");
         saved[id[1]].splice(id[0], 1);
+        if (saved[id[1]].length === 0) {
+            delete saved[id[1]];
+        }
         showSavedClasses(saved);
     }
 
@@ -245,18 +245,27 @@
         savedArea.innerHTML = "";
         var updatedHTML = "";
         for (className in saved) {
-            updatedHTML += "<button>" + className + saved[className].length + "</button>";
-            updatedHTML += "<table>";
-            for (var i=0; i < saved[className].length; i++) {
-                var id = i + "_" + className.split(" ").join("-");
-                updatedHTML += "<tr onclick='clickRemoveClass(saved, this)'" + "id=" + id + ">";
-                for (var j=0; j < 4; j++) {
-                    updatedHTML += "<td>" + saved[className][i][j].innerHTML + "</td>";
-                }       
-                updatedHTML += "</tr>";         
+            if (saved[className].length === 0) {
+            delete saved[className];
             }
-            updatedHTML += "</table>";
+            else{
+                updatedHTML += "<button class='first-level-course'>" + className + saved[className].length + "</button>";
+                updatedHTML += "<table>";
+                updatedHTML += "<tbody> <tr> <th>Code</th> <th>Type</th> <th>Professor</th> <th>Time</th> </tr>";
+                for (var i=0; i < saved[className].length; i++) {
+                    var id = i + "_" + className.split(" ").join("-");
+                    updatedHTML += "<tr onclick='clickRemoveClass(saved, this)'" + "id=" + id + ">";
+                    for (var j=0; j < 4; j++) {
+                        updatedHTML += "<td>" + saved[className][i][j].innerHTML + "</td>";
+                    }       
+                    updatedHTML += "</tr>";         
+                }
+                updatedHTML += "</tbody>";
+                updatedHTML += "</table>";
+            }
+            
         }
+        
         savedArea.innerHTML = updatedHTML
     }
 </script>
