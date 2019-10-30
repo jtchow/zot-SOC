@@ -17,13 +17,13 @@ button{
 /*   -------------------------------------------  Header styles  ----------------------------------------------- */
 
 header#output {
-    width: 84%;
+    width: 75%;
     float: left;
 }
 
 /*   -------------------------------------------  Saved styles  ----------------------------------------------- */
 div.saved {
-    width: 16%;
+    width: 25%;
     height: 1000px;
     float: right;
     /* background-color: #CACCA3; */
@@ -34,6 +34,7 @@ div.saved {
 div.saved > div#saved-heading {
     background-color: antiquewhite;
     height: 6.5%;
+    display: block;
 }
 div.saved > div#saved-heading > h1 {
     font-size: 27px;
@@ -41,9 +42,22 @@ div.saved > div#saved-heading > h1 {
     padding: 17px;   
 }
 
+div.saved > p#saved-text {
+    text-align: center;
+}
+
+div.saved > div#saved-classes {
+    width: 100%;
+}
+div.saved > div#saved-classes > p {
+    padding: 10px;
+    outline: .5px solid;
+    text-align: left;
+}
+
 /*   -------------------------------------------  Results styles  ----------------------------------------------- */
 div.results {
-    width: 84%;
+    width: 75%;
     float: left;
     padding-top: 3%;
 }
@@ -167,10 +181,15 @@ table.course > tr, td {
     border: 1.5px solid #c4c4c4;
     text-align: left;
     padding: 8px;
+    cursor: pointer;
 }
 
 div.content {
     display: none;
+}
+
+tr.active {
+    background-color: antiquewhite;
 }
 /*   -------------------------------------------  Output Holder styles  ----------------------------------------------- */
 div.output {

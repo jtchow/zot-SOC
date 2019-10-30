@@ -33,7 +33,7 @@
                             {% for course in req.classes[dept] %}
                                 <button class="collapsible subreq-course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
                                 <div class="content">
-                                    {{showTable(course,'subreq-course')}}
+                                    {{showTable(dept, course,'subreq-course')}}
                                 </div>
                             {% endfor %}
                         {% endfor %}
@@ -49,7 +49,7 @@
                             {% for course in small_req.classes[dept] %}
                                 <button class="collapsible course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
                                 <div class="content">
-                                    {{showTable(course,'course')}}
+                                    {{showTable(dept, course,'course')}}
                                 </div>
                             {% endfor %}
                         {% endfor %}
@@ -66,8 +66,8 @@
                 {% for dept in big_req.classes %}
                     {% for course in big_req.classes[dept] %}
                         <button class="first-level-course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
-                        <div class="content">
-                            {{showTable(course,'first-level-course')}}
+                        <div class="content" id="{{course.title}}">
+                            {{showTable(dept, course,'first-level-course')}}
                         </div>
                     {% endfor %}
                 {% endfor %}
@@ -75,7 +75,7 @@
         {% endif %}
 {%- endmacro %}
 
-{% macro showTable(course, className) -%}
+{% macro showTable(dept, course, className) -%}
     <table class="{{className}}">
         <tr>
             <th>Code</th>
@@ -90,7 +90,7 @@
             <th>Status</th>
         </tr>
         {% for offering in course.offerings %}
-            <tr>
+            <tr id="{{dept}} {{course.num}}: {{course.title}}" onclick="addToSaved(this, saved)">
                 {% for attr in offering.values() %}
                     <td> {{attr}} </td>
                 {% endfor %}
@@ -111,8 +111,9 @@
         <div id="saved-heading">
             <h1>Saved</h1>
         </div>
-        
+        <p id="saved-text">Select a class to save it.</p>
         <div id="saved-classes">
+            
         </div>
         
     </div>
@@ -144,6 +145,7 @@
 </body>
 
 <script>
+    var saved = {};
     function showContents(bigReqButton) {
         makeActive(bigReqButton);
         var contents = document.getElementById("big-requirement-contents");
@@ -166,21 +168,96 @@
 
     function expand_or_collapse(button_clicked) {
         var content = button_clicked.nextElementSibling;
-        makeActive(button_clicked);
+        collapsePeers(button_clicked);
+        button_clicked.classList.toggle("active");
         if (content.style.display === "block") {
             content.style.display = "none";
+            collapseChildren(content);
+        } 
+        else {
+            content.style.display = "block";
+        } 
+    }
 
-            var allChildren = content.children;
+    function collapsePeers(button_clicked) {
+        var className = button_clicked.className;
+        var peers = document.getElementsByClassName(className);
+        
+        for (var i=0; i<peers.length; i++) {
+            collapseChildren(peers[i]);
+        }
+    }
+
+    function collapseChildren(content) {
+        var allChildren = content.children;
             for (var i = 0; i < allChildren.length; i++) {
                 var contentChild = allChildren[i];
                 if (contentChild.className === "content") {
                     contentChild.style.display = "none";
                 }                
             }
-        } 
+    }
+
+    function initializeSavedClass(row, courseTitle, saved) {
+        var rowArray = [row.children];
+        saved[courseTitle] = rowArray;        
+    }
+
+    function appendSavedClass(row, courseTitle, saved) {
+        saved[courseTitle].push(row.children);
+        
+    }
+
+    function removeSavedClass(row, courseTitle, saved) {
+        var index = saved[courseTitle].indexOf(row.children);
+        saved[courseTitle].splice(index, 1);
+    }
+
+    function addToSaved(row, saved) {
+        var courseTitle = row.id;
+        row.classList.toggle("active");
+        if (courseTitle in saved) {
+            if (saved[courseTitle].includes(row.children)) {
+
+                removeSavedClass(row, courseTitle, saved);
+            }
+
+            else {
+                appendSavedClass(row, courseTitle, saved);
+            }
+
+        }
         else {
-            content.style.display = "block";
-        } 
+            initializeSavedClass(row, courseTitle, saved);
+        }        
+        showSavedClasses(saved);
+    }
+
+    function clickRemoveClass(saved, element) {
+        var id = element.id.split("-").join(" ").split("_");
+        saved[id[1]].splice(id[0], 1);
+        showSavedClasses(saved);
+    }
+
+    function showSavedClasses(saved) {
+        document.getElementById("saved-text").style.display = "none";
+        var savedArea = document.getElementById("saved-classes");
+        savedArea.innerHTML = "";
+        var updatedHTML = "";
+        for (className in saved) {
+            updatedHTML += "<button>" + className + saved[className].length + "</button>";
+            updatedHTML += "<table>";
+            for (var i=0; i < saved[className].length; i++) {
+                var id = i + "_" + className.split(" ").join("-");
+                updatedHTML += "<tr onclick='clickRemoveClass(saved, this)'" + "id=" + id + ">";
+                for (var j=0; j < 4; j++) {
+                    updatedHTML += "<td>" + saved[className][i][j].innerHTML + "</td>";
+                }       
+                updatedHTML += "</tr>";         
+            }
+            updatedHTML += "</table>";
+        }
+        savedArea.innerHTML = updatedHTML
     }
 </script>
 </html>
