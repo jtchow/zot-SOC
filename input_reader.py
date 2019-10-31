@@ -173,37 +173,42 @@ def read_input(degreeworks_data):
     all_requirements = []
     lines = degreeworks_data.splitlines()
     choose_number = 0
+    started = False
     
     for i,line in enumerate(lines):
-        line = clean_line(line)                 
+        if started:
+            line = clean_line(line)                 
 
-        #Ex: "Still needed: 1 class in Econ20"                                 
-        if 'Still' in line and 'Class' in line:                                 
-            add_single_requirement(all_requirements, line, i, lines)
+            #Ex: "Still needed: 1 class in Econ20"                                 
+            if 'Still' in line and 'Class' in line:                                 
+                add_single_requirement(all_requirements, line, i, lines)
 
-        #Ex: "Still needed: 3 classes Category IV"
-        elif 'Still' in line:
-            create_master_requirement(all_requirements, lines, i)
+            #Ex: "Still needed: 3 classes Category IV"
+            elif 'Still' in line:
+                create_master_requirement(all_requirements, lines, i)
 
-        elif 'Choose' in line:
-            create_sub_requirement(all_requirements,lines,i)
-            choices = get_choose_number(line)
-            choose_number += choices
-            
+            elif 'Choose' in line:
+                create_sub_requirement(all_requirements,lines,i)
+                choices = get_choose_number(line)
+                choose_number += choices
+                
 
-        elif 'Class' in line and 'in' in line:  
-            #Ex: "2 classes in Econ20, 21, 22"                            
-            if ',' in line:                                 
-                offered_courses = add_multiple_classes(line)   
+            elif 'Class' in line and 'in' in line:  
+                #Ex: "2 classes in Econ20, 21, 22"                            
+                if ',' in line:                                 
+                    offered_courses = add_multiple_classes(line)   
 
-            #Ex: "1 classes in Econ20"
-            else:
-                offered_courses = add_single_class(line)
+                #Ex: "1 classes in Econ20"
+                else:
+                    offered_courses = add_single_class(line)
 
-            if offered_courses is not None:
-                add_to_bigger_requirement(all_requirements, i, lines, offered_courses, choose_number)  
-                if choose_number > 0:
-                    choose_number -= 1
+                if offered_courses is not None:
+                    add_to_bigger_requirement(all_requirements, i, lines, offered_courses, choose_number)  
+                    if choose_number > 0:
+                        choose_number -= 1
+        else:
+            if 'General Education Requirements' in line:
+                started = True
 
     empty_checker(all_requirements)
     return all_requirements

@@ -84,21 +84,21 @@ nav > a:hover {
 
 div.welcome {
     border: 1px solid rgb(51, 51, 51);
-    height: 3%;
+    height: 2%;
 }
 
 div.welcome > p#welcome {
-    font-size: 65px;
+    font-size: 53px;
     text-align: center;
-    padding-top: 30px;   
+    padding-top: 20px;   
     padding-bottom: 6px; 
 }
 
 div.welcome > p#sub-welcome {
-    font-size: 42px;
+    font-size: 40px;
     text-align: center;
-    padding-top: 10px;   
-    padding-bottom: 30px; 
+    padding-top: 6px;   
+    padding-bottom: 20px; 
 }
 
 
@@ -106,13 +106,13 @@ div.welcome > p#sub-welcome {
 
 div.instructions {
     width: 50%;   
-    padding-top: 6%;
+    padding-top: 1.5%;
     height: 550px;
     float: left;
 }
 
 div.instructions > ol {
-    width: 70%;
+    width: 75%;
     margin-left: auto;
     margin-right: 4%;
     height: 100%;
@@ -121,8 +121,9 @@ div.instructions > ol {
 }
 
 div.instructions > ol > li {
-    font-size: 30px;
+    font-size: 25px;
     margin-bottom: 12px;
+    float: left;
 }
 
 div.instructions > ol > li > a {
@@ -131,13 +132,21 @@ div.instructions > ol > li > a {
     color: rgb(92, 156, 230)
 }
 
+div.instructions > ol > img {
+    width: 90%;
+    float: left;
+    margin-left: 10px;
+    margin-bottom: 12px;
+    border: 2px solid;
+}
+
 /*   -------------------------------------------  Submission styles  ----------------------------------------------- */
 
 div.submission {
     width: 50%;
     float: left;
     height: 550px;
-    padding-top: 4%;
+    padding-top: 5%;
 }
 
 div.submission > form {
