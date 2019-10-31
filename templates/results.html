@@ -90,7 +90,7 @@
             <th>Status</th>
         </tr>
         {% for offering in course.offerings %}
-            <tr id="{{dept}} {{course.num}}: {{course.title}}" onclick="addToSaved(this, saved)">
+            <tr class="information" id="{{dept}} {{course.num}}: {{course.title}}" onclick="addToSaved(this, saved)">
                 {% for attr in offering.values() %}
                     <td> {{attr}} </td>
                 {% endfor %}
@@ -111,7 +111,9 @@
         <div id="saved-heading">
             <h1>Saved</h1>
         </div>
-        <p id="saved-text">Select a class to save it.</p>
+        
+        <p id="saved-text">Click on a class to save it. <br>Click again to remove it.</p>
+
         <div id="saved-classes">
             
         </div>

@@ -27,4 +27,8 @@ def show_output():
     courses = read_input(degreeworks)
     return render_template('results.html',courses=courses)
 
+@app.route('/bug')
+def contact():
+    return render_template("bug.html")
+
 

@@ -4,6 +4,7 @@
 <head>
     <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link href="/static/styling/home.css" rel="stylesheet" />
+    <link href="/static/styling/bug.css" rel="stylesheet" />
     <link rel="icon" href="/static/placeholder.jpg" type="image/icon type">
 </head>
 
@@ -22,35 +23,22 @@
         </div>        
     </header>
 
-    <div class="welcome">
-        <p id="welcome"> Welcome. </p>
-        <p id="sub-welcome"> Follow the instructions below to start planning your schedule. </p>
+    <div id="contact-instructions">
+        <p>Enter your input and the bug you found in the boxes below. </p>
     </div>
 
-
-    <div class="instructions">
-        <ol>
-            <li> Log in to your <a href="https://login.uci.edu/ucinetid/webauth" target="_blank">Degreeworks</a>.</li>
-            <li> Use CTRL+A and CTRL+C to copy all information from your Degreeworks.</li>
-            <li> Paste information into the box on the right.</li>
-            <li> Hit the "Submit" button.</li>
-        </ol>
-    </div>
-
-    <div class="submission">
+    <div id="contact-submission">
         <form action="{{ url_for('index') }}" method="post">
-            <textarea name="degreeworks" rows="30" cols="90"></textarea>
+            <label for="degreeworks">Degreeworks input:</label>
+            <textarea name="degreeworks" rows="25" cols="60"></textarea>
+            <br>
+            <label for="problem">Problem:</label>
+            <textarea name="problem" rows="5" cols="60"></textarea>
             <br>
             <input type="submit">
-        </form>       
+        </form>
     </div>
+
 </body>
 
-
-
 </html>
-
-
-
-    
-

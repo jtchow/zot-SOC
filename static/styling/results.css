@@ -44,6 +44,8 @@ div.saved > div#saved-heading > h1 {
 
 div.saved > p#saved-text {
     text-align: center;
+    font-size: 30px;
+    padding-top: 20px;
 }
 
 div.saved > div#saved-classes {
@@ -71,6 +73,10 @@ div.saved > div#saved-classes > table > tr, td {
     border: 1.5px solid #c4c4c4;
     text-align: left;
     padding: 8px;
+}
+
+tr.information.active {
+    background-color: antiquewhite;
 }
 
 /*   -------------------------------------------  Results styles  ----------------------------------------------- */
@@ -206,7 +212,7 @@ div.content {
     display: none;
 }
 
-tr:hover {
+tr.information:hover {
     background-color: antiquewhite;
 }
 
