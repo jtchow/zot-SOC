@@ -29,13 +29,19 @@
 
     <div id="contact-submission">
         <form action="{{ url_for('index') }}" method="post">
-            <label for="degreeworks">Degreeworks input:</label>
-            <textarea name="degreeworks" rows="25" cols="60"></textarea>
-            <br>
-            <label for="problem">Problem:</label>
-            <textarea name="problem" rows="5" cols="60"></textarea>
-            <br>
-            <input type="submit">
+            <div id="submission-boxes">
+                <label for="degreeworks">Degreeworks input:</label>
+                <textarea name="degreeworks" rows="25" cols="60"></textarea>
+                <br>
+                <label for="problem">Problem:</label>
+                <textarea name="problem" rows="5" cols="60"></textarea>
+                <br>
+            </div>
+            
+            <div id="submission-button">
+                <input type="submit">
+            </div>
+            
         </form>
     </div>
 

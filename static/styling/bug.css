@@ -5,7 +5,7 @@ div#contact-instructions {
 }
 
 div#contact-instructions > p {
-    font-size: 25px;
+    font-size: 40px;
     text-align: center;
 
 }
@@ -18,8 +18,13 @@ div#contact-submission > form {
     padding-top: 6%;
 }
 
-div#contact-submission > form > input {
-    padding-top: 1%;
+div#submission-button {
+    width: 70%;
+    float: right;
+
+}
+div#submission-button > input {
+    margin-top: 3%;
     display: block;
     margin-right: auto;
     margin-left: auto;
@@ -34,7 +39,7 @@ div#contact-submission > form > input {
 }
 
 
-div#contact-submission > form > textarea {
+div#submission-boxes > textarea {
     display: block;
     width: 70%;
     float: left;
@@ -42,9 +47,10 @@ div#contact-submission > form > textarea {
     border: 2px solid #ccc;
     border-radius: 4px;
     background-color: #f8f8f8;
+    margin-bottom: 2%;
 }
 
-div#contact-submission > form > label {
+div#submission-boxes > label {
     width: 30%;
     font-size: 20px;
     float: left;
