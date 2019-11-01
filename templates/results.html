@@ -60,19 +60,20 @@
             {% endfor %}  
         </div>
             
-        <!-- If its just a regular requirement then show the classes in it -->
-        {% elif big_req.is_master_req == False %}
-            <div>
-                {% for dept in big_req.classes %}
-                    {% for course in big_req.classes[dept] %}
-                        <button class="first-level-course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
-                        <div class="content" id="{{course.title}}">
-                            {{showTable(dept, course,'first-level-course')}}
-                        </div>
-                    {% endfor %}
+    <!-- If its just a regular requirement then show the classes in it -->
+    {% elif big_req.is_master_req == False %}
+        <div>
+            <button class="first-level-course still-needed">Still need: {{big_req.still_needed_num}} class(es)</button>
+            {% for dept in big_req.classes %}
+                {% for course in big_req.classes[dept] %}
+                    <button class="first-level-course" onclick="expand_or_collapse(this)">{{dept}} {{course.num}}: {{course.title}}</button>
+                    <div class="content" id="{{course.title}}">
+                        {{showTable(dept, course,'first-level-course')}}
+                    </div>
                 {% endfor %}
-            </div>
-        {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
 {%- endmacro %}
 
 {% macro showTable(dept, course, className) -%}
@@ -250,8 +251,9 @@
             if (saved[className].length === 0) {
             delete saved[className];
             }
-            else{
-                updatedHTML += "<button class='first-level-course'>" + className + saved[className].length + "</button>";
+            else {
+                var length = saved[className].length;
+                updatedHTML += "<button class='saved first-level-course'>" + className + "</button>";
                 updatedHTML += "<table>";
                 updatedHTML += "<tbody> <tr> <th>Code</th> <th>Type</th> <th>Professor</th> <th>Time</th> </tr>";
                 for (var i=0; i < saved[className].length; i++) {

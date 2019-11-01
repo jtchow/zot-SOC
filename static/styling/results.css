@@ -11,6 +11,9 @@ button{
     padding: 13px;
     -webkit-border-radius: 5px;
     border-radius: 5px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
@@ -28,7 +31,7 @@ div.saved {
     float: right;
     /* background-color: #CACCA3; */
     outline: 1px solid;
-    overflow: hidden;
+    overflow: scroll;
 }
 
 div.saved > div#saved-heading {
@@ -79,6 +82,7 @@ tr.information.active {
     background-color: antiquewhite;
 }
 
+
 /*   -------------------------------------------  Results styles  ----------------------------------------------- */
 div.results {
     width: 75%;
@@ -89,7 +93,7 @@ div.results {
 /*   -------------------------------------------  Big Requirement styles  ----------------------------------------------- */
 
 div.big-requirement-area {
-    width: 30%;
+    width: 35%;
     float: left;      
 }
 
@@ -117,10 +121,12 @@ button.big-requirement:hover {
 div.big-requirement-list > button.active {
     background-color: #C8DDB0;
 }
+
+
 /*   -------------------------------------------  Big Requirement Content styles  ----------------------------------------------- */
 
 div#big-requirement-contents {
-    width: 60%;
+    width: 55%;
     float: left;    
     margin-top: 55px;
     margin-left: 50px;
@@ -177,6 +183,11 @@ button.first-level-course {
     background-color: rgb(224, 224, 224);
 }
 
+button.still-needed {
+    text-align: center;
+    background-color: rgb(160, 159, 168);
+    cursor: default;
+}
 table.course {
     width: 96%;
     float: right;
