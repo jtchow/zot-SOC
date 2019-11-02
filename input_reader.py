@@ -141,8 +141,11 @@ def get_choose_number(line):
 
 def create_sub_requirement(all_courses, lines, i):
     requirement_name = clean_line(lines[i-1])
+    #print("\t",requirement_name)
     sub_req = SubRequirement(requirement_name)
     all_courses[-1].fulfilled_by.append(sub_req)  
+    for subreq in all_courses[-1].fulfilled_by:
+        print(subreq.name)
 
 
 def empty_checker(all_requirements):
@@ -173,10 +176,10 @@ def read_input(degreeworks_data):
     all_requirements = []
     lines = degreeworks_data.splitlines()
     choose_number = 0
-    started = False
+    #started = False
     
     for i,line in enumerate(lines):
-        if started:
+        #if started:
             line = clean_line(line)                 
 
             #Ex: "Still needed: 1 class in Econ20"                                 
@@ -206,9 +209,9 @@ def read_input(degreeworks_data):
                     add_to_bigger_requirement(all_requirements, i, lines, offered_courses, choose_number)  
                     if choose_number > 0:
                         choose_number -= 1
-        else:
-            if 'General Education Requirements' in line:
-                started = True
+        # else:
+        #     if 'General Education Requirements' in line:
+        #         started = True
 
     empty_checker(all_requirements)
     return all_requirements
@@ -274,7 +277,6 @@ def expand_courses(courses):
                 else:
                     add_honors_unknowns(course,department_courses)
                 department_courses.remove(course)
-        print(department_courses)
             
     return courses
 
