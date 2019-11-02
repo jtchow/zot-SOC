@@ -14,7 +14,7 @@
 body {
     font-family: 'Lato Light', sans-serif;
     background-color: #F4F4EC;
-    overflow: hidden;
+    overflow: scroll;
 }
 
 /*   -------------------------------------------  general header styles  ----------------------------------------------- */

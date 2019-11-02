@@ -141,11 +141,8 @@ def get_choose_number(line):
 
 def create_sub_requirement(all_courses, lines, i):
     requirement_name = clean_line(lines[i-1])
-    #print("\t",requirement_name)
     sub_req = SubRequirement(requirement_name)
     all_courses[-1].fulfilled_by.append(sub_req)  
-    for subreq in all_courses[-1].fulfilled_by:
-        print(subreq.name)
 
 
 def empty_checker(all_requirements):
