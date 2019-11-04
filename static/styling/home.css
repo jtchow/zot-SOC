@@ -14,7 +14,7 @@
 body {
     font-family: 'Lato Light', sans-serif;
     background-color: #F4F4EC;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 /*   -------------------------------------------  general header styles  ----------------------------------------------- */
@@ -88,14 +88,14 @@ div.welcome {
 }
 
 div.welcome > p#welcome {
-    font-size: 53px;
+    font-size: 37px;
     text-align: center;
     padding-top: 20px;   
     padding-bottom: 6px; 
 }
 
 div.welcome > p#sub-welcome {
-    font-size: 40px;
+    font-size: 26px;
     text-align: center;
     padding-top: 6px;   
     padding-bottom: 20px; 
@@ -106,7 +106,7 @@ div.welcome > p#sub-welcome {
 
 div.instructions {
     width: 50%;   
-    padding-top: 1.5%;
+    padding-top: 2.5%;
     height: 550px;
     float: left;
 }
@@ -121,8 +121,9 @@ div.instructions > ol {
 }
 
 div.instructions > ol > li {
-    font-size: 25px;
+    font-size: 20px;
     margin-bottom: 12px;
+    width: 90%;
     float: left;
 }
 
