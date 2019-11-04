@@ -27,10 +27,12 @@ header {
 
 
 div.header-left > img#logoimg {
-    width: 2.8vmax;
-    height: 2.8vmax;
+    width: 10%;
+    height: 100%;
     float: left;
-    padding: 8px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
 }
 
 /*   -------------------------------------------  header left styles  ----------------------------------------------- */
@@ -39,7 +41,7 @@ header > div.header-left > a {
     float: left;
     padding: .2vh .2vh .2vh .4vh;
     font-family: 'Lato Light', sans-serif;
-    color: black;
+    color: rgb(37, 37, 37);
     text-decoration: none;
 }
 
@@ -65,7 +67,7 @@ header > div.header-right > nav > a {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-    color:black;
+    color:rgb(37, 37, 37);
 }
 
 
@@ -75,15 +77,16 @@ header > div.header-right > nav > a {
     height: 100%;
 }
 
-nav > a:hover {
-  background-color: #ddd;
-  color: black;
+div.header-right > nav > a:hover {
+    background-color: #7CAFD6;
+    color: rgb(230, 223, 223);
 }
 
 /*   -------------------------------------------  Welcome styles  ----------------------------------------------- */
 
 div.welcome {
-    border: 1px solid rgb(51, 51, 51);
+    border-top: 1px solid rgb(51, 51, 51);
+    border-bottom: 1px solid rgb(51, 51, 51);
     height: 2%;
 }
 
@@ -163,7 +166,7 @@ div.submission > form > input {
     margin-left: auto;
     padding:5px 15px; 
     background: #7CAFD6; 
-    color: #F4F4EC;
+    color: rgb(255, 255, 255);
     border:0 none;
     cursor:pointer;
     -webkit-border-radius: 5px;
