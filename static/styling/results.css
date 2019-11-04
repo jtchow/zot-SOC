@@ -17,11 +17,8 @@ button {
 }
 
 body {
-    font-family: 'Lato Light', sans-serif;
-    background-color: #F4F4EC;
     overflow: hidden;
 }
-
 
 /*   -------------------------------------------  Header styles  ----------------------------------------------- */
 
@@ -184,7 +181,6 @@ button.subreq-course {
 }
 
 button.first-level-course {
-    cursor: default;
     width: 100%;
     float: left;
     background-color: rgb(224, 224, 224);
