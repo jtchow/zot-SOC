@@ -27,6 +27,10 @@ header#output {
     float: left;
 }
 
+div.header-left > img#logoimg {
+    width: 12%;
+}
+
 /*   -------------------------------------------  Saved styles  ----------------------------------------------- */
 div.saved {
     width: 25%;
@@ -38,7 +42,7 @@ div.saved {
 }
 
 div.saved > div#saved-heading {
-    background-color: antiquewhite;
+    background-color: rgb(247, 225, 197);
     height: 6.5%;
     display: block;
 }
@@ -82,7 +86,7 @@ div.saved > div#saved-classes > table > tr, td {
 }
 
 tr.information.active {
-    background-color: antiquewhite;
+    background-color: rgb(247, 225, 197);
 }
 
 
