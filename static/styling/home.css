@@ -26,11 +26,11 @@ header {
 }
 
 
-#logoimg {
-    width: 2.4vmax;
-    height: 2.4vmax;
+div.header-left > img#logoimg {
+    width: 2.8vmax;
+    height: 2.8vmax;
     float: left;
-    padding: 10px;
+    padding: 8px;
 }
 
 /*   -------------------------------------------  header left styles  ----------------------------------------------- */
